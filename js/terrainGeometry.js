@@ -8,7 +8,8 @@ export default class TerrainGeometry extends PlaneGeometry {
         super(size, size, resolution - 1, resolution - 1);
 
         this.rotateX((Math.PI / 180) * -90);
-
+        this.polygonOffset = true;
+        this.polygonOffsetUnits = 0.01;
         const data = getHeightmapData(image, resolution);
 
         for (let i = 0; i < data.length; i++) {

@@ -57,8 +57,8 @@ export default class Terrain extends THREE.Object3D {
             this.terrain.add(mesh);
             this.scene.add(this.terrain);
 
-            const box = new THREE.BoxHelper(mesh, 0xffff00);
-            this.terrain.add(box);
+            //const box = new THREE.BoxHelper(mesh, 0xffff00);
+            //this.terrain.add(box);
         }
         this.terrainImage.src = 'images/terrain.png';
     }
