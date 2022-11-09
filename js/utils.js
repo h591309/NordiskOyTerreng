@@ -19,6 +19,5 @@ export function getHeightmapData(image, size) {
     for (let i = 0; i < imageData.length; i += 4) {
       data[i / 4] = imageData[i] / 255;
     }
-  
     return data;
   }

@@ -6,14 +6,14 @@ import {getHeightmapData} from "./utils.js";
 export default class TerrainGeometry extends PlaneGeometry {
     constructor(size, resolution, height, image) {
         super(size, size, resolution - 1, resolution - 1);
-
         this.rotateX((Math.PI / 180) * -90);
         this.polygonOffset = true;
         this.polygonOffsetUnits = 0.01;
-        const data = getHeightmapData(image, resolution);
+        this.data = getHeightmapData(image, resolution);
 
-        for (let i = 0; i < data.length; i++) {
-            this.attributes.position.setY(i, data[i] * height);
+
+        for (let i = 0; i < this.data.length; i++) {
+            this.attributes.position.setY(i, this.data[i] * height);
         }
     }
 }
