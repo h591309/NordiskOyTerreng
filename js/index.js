@@ -7,7 +7,7 @@ import { Sky } from './three/Sky.js';
 import Ocean from './ocean.js';
 
 
-const numberOfIslands = 10;
+const numberOfIslands = 50;
 
 const renderer = new THREE.WebGLRenderer({
     canvas: document.querySelector("canvas"),

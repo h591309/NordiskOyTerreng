@@ -20,8 +20,8 @@ export default class Islands {
         let counter2 = 0;
         let numberOfIslandsleft = this.numberOfIslands;
         for(let i = 0; i < this.numberOfIslands; i++) { // y
-            let posX = Constants.size * Math.random() * 10;
-            let posY = Constants.size * Math.random() * 10;
+            let posX = Constants.space * Math.random() * 10 - (Constants.space * 10) / 2;
+            let posY = Constants.space * Math.random() * 10 - (Constants.space * 10) / 2;
             this.islands[i] = new Terrain(this.scene, this.camera);
             this.islands[i].transform(posX , -0.5, posY);
         }
