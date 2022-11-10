@@ -25,7 +25,7 @@ export default class Tree {
                    
                  for (let i = 0; i < amount; i++) {
                     sampler.sample(tempPosition);
-                     if(tempPosition.y + position.y < 5 || tempPosition.y + position.y > 40){
+                     if(tempPosition.y + position.y < 5 || tempPosition.y + position.y > 60){
                         i--;
                      } else {
                         tempObject.position.set(tempPosition.x + position.x, tempPosition.y + position.y+1, tempPosition.z + position.z);

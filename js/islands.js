@@ -16,9 +16,6 @@ export default class Islands {
     }
 
     generate() {
-        let counter = 0;
-        let counter2 = 0;
-        let numberOfIslandsleft = this.numberOfIslands;
         for(let i = 0; i < this.numberOfIslands; i++) { // y
             let posX = Constants.space * Math.random() * 10 - (Constants.space * 10) / 2;
             let posY = Constants.space * Math.random() * 10 - (Constants.space * 10) / 2;
@@ -27,14 +24,11 @@ export default class Islands {
         }
     }
 
-    getAveragePos() {
-        let maxX = Constants.size*this.numberOfIslands*2;
-        let maxY = Constants.size*this.numberOfIslands*2;
-
+    getFirstIslandPos() {
         let avgPos = {
-            x: maxX/2,
+            x: this.islands[0].terrain.position.x,
             y: 0,
-            z: maxY/2
+            z: this.islands[0].terrain.position.z
         }
         return avgPos;
     }
