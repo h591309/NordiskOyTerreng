@@ -17,7 +17,7 @@ export default class Tree {
                  * 
                  */
 
-                 const sampler = new MeshSurfaceSampler( geometry ).setWeightAttribute('color').build();
+                 const sampler = new MeshSurfaceSampler( geometry ).setWeightAttribute('heat').build();
                  
                  const tempPosition = new THREE.Vector3();
                  const tempObject = new THREE.Object3D();
@@ -25,12 +25,11 @@ export default class Tree {
                    
                  for (let i = 0; i < amount; i++) {
                     sampler.sample(tempPosition);
-                    console.log(tempPosition.y + position.y);
                      if(tempPosition.y + position.y < 5 || tempPosition.y + position.y > 40){
                         i--;
                      } else {
-                        tempObject.position.set(tempPosition.x + position.x, tempPosition.y + position.y, tempPosition.z + position.z);
-                        tempObject.scale.setScalar(Math.random() * 0.5 + 0.5);
+                        tempObject.position.set(tempPosition.x + position.x, tempPosition.y + position.y+1, tempPosition.z + position.z);
+                        //tempObject.scale.setScalar(Math.random() * 0.5 + 0.5);
                         tempObject.updateMatrix();
                         trees.setMatrixAt(i, tempObject.matrix);
                      }

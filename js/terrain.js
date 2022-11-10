@@ -64,6 +64,7 @@ export default class Terrain extends THREE.Object3D {
         
     }
     //Test
+    /*
     readTextureToGeometry(){
         let v2 = new THREE.Vector2();
         let color = [];
@@ -72,7 +73,23 @@ export default class Terrain extends THREE.Object3D {
         }
         this.geometry.setAttribute("color", new THREE.Float32BufferAttribute(color, 1));
         console.log("done");
-      }
+    }
+    */
+
+    
+    readTextureToGeometry(){
+        let heat = [];
+        for(let i = 0; i < this.geometry.attributes.uv.count; i++){
+            let val = this.data[i];
+            val = Math.pow(1 - val, 8); // emphasise (not mandatory)
+            heat.push(val);
+        }
+        this.geometry.setAttribute("heat", new THREE.Float32BufferAttribute(heat, 1));
+        console.log(this.geometry.getAttribute("heat"));
+        console.log("done");
+    }
+
+    
 
     #addThrees(terrainData) {
         this.data = terrainData;
