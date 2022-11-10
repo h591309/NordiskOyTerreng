@@ -7,7 +7,7 @@ import { Sky } from './three/Sky.js';
 import Ocean from './ocean.js';
 
 
-const numberOfIslands = 10;
+const numberOfIslands = 5;
 
 const renderer = new THREE.WebGLRenderer({
     canvas: document.querySelector("canvas"),
@@ -22,7 +22,7 @@ renderer.setClearColor(white, 1.0);
 
 const scene = new THREE.Scene();
 
-const camera = new THREE.PerspectiveCamera(80, 1, 0.1, 5000);
+const camera = new THREE.PerspectiveCamera(80, 1, 0.1, 10000);
 camera.lookAt(0, 0, 0);
 scene.add(camera);
 
@@ -55,8 +55,9 @@ const islands = new Islands(scene, camera, numberOfIslands);
 const avgIslandPos = islands.getAveragePos();
 
 const controller = new CameraController(camera, renderer.domElement);
-controller.setTarget(new THREE.Vector3(ocean.x, ocean.y, ocean.z));
+controller.setPosition(new THREE.Vector3(ocean.x, 0, ocean.z));
 avgIslandPos.y = 100;
+controller.setPosition(avgIslandPos);
 controller.update();
 
 function updateSun() {

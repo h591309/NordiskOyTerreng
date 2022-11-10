@@ -1,6 +1,5 @@
 import {
-	Camera,
-	Vector3
+	Camera
 } from './three/three.module.js';
 
 import { OrbitControls } from './three/OrbitControls.js';

@@ -41,12 +41,12 @@ export default class Terrain extends THREE.Object3D {
             const alphaMap = new THREE.TextureLoader().load('images/terrain' + this.islandNumber + '.png');
             grass.wrapS = THREE.RepeatWrapping;
             grass.wrapT = THREE.RepeatWrapping;
-            grass.repeat.multiplyScalar(this.size / 4);
+            grass.repeat.multiplyScalar(this.size / 16);
             this.geometry = new TerrainGeometry(this.size, this.resolution, this.height, this.terrainImage);
             rock.wrapS = THREE.RepeatWrapping;
             rock.wrapT = THREE.RepeatWrapping;
 
-            rock.repeat.multiplyScalar(this.size / 4);
+            rock.repeat.multiplyScalar(this.size / 16);
 
             const material = new TextureSplattingMaterial({
                 color: THREE.Color.NAMES.white,
@@ -56,7 +56,7 @@ export default class Terrain extends THREE.Object3D {
             const mesh = new THREE.Mesh(this.geometry, material);
             this.terrain.add(mesh);
             this.scene.add(this.terrain);
-            this.#addThrees(this.geometry.data, 10);
+            this.#addThrees(this.geometry.data);
             //const box = new THREE.BoxHelper(mesh, 0xffff00);
             //this.terrain.add(box);
         }
@@ -102,7 +102,7 @@ export default class Terrain extends THREE.Object3D {
         let counter = 0;
         
 
-        const tree = new Tree(this.scene, 1000, this.geometry, this.terrain.position);
+        const tree = new Tree(this.scene, 700, this.geometry, this.terrain.position);
         
 
         /*
