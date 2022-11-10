@@ -2,6 +2,9 @@
     "height": 100,
     "resolution": 128,
     "size": 720,
-    "space": 600
+    "space": 600,
+    "tree": {
+        "size": 20
+    }
 }
     

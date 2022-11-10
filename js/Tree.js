@@ -1,11 +1,13 @@
 import { GLTFLoader } from './three/GLTFLoader.js';
 import * as THREE from './three/three.module.js';
 import {MeshSurfaceSampler} from './three/MeshSurfaceSampler.js';
+import Constants from "../json/constants.json" assert {type: 'json'};
 
 export default class Tree {
-    constructor(scene, size, amount, geometry, position) {
+    constructor(scene, amount, geometry, position) {
+        const size = Constants.tree.size;
         const loader = new GLTFLoader();
-        loader.load( '../3dmodels/basicThree2.glb', function ( gltf ) {
+        loader.load( '../3dmodels/basicThree4.glb', function ( gltf ) {
             gltf.scene.children[0].scale.set(size,size,size);
             gltf.scene.traverse(function(child) {
                 const trees = new THREE.InstancedMesh(child.geometry, child.material, amount);
@@ -14,16 +16,18 @@ export default class Tree {
                 /**
                  * 
                  */
-                 const sampler = new MeshSurfaceSampler( geometry ).setWeightAttribute( 'color' ).build();
+
+                 const sampler = new MeshSurfaceSampler( geometry ).setWeightAttribute('color').build();
                  
                  const tempPosition = new THREE.Vector3();
                  const tempObject = new THREE.Object3D();
                  
                    
-                 for (let i = 0; i < 300; i++) {
-                     sampler.sample(tempPosition);
-                     if(tempPosition.y + position.y < 0 || tempPosition.y + position.y > 80){
-                        
+                 for (let i = 0; i < amount; i++) {
+                    sampler.sample(tempPosition);
+                    console.log(tempPosition.y + position.y);
+                     if(tempPosition.y + position.y < 5 || tempPosition.y + position.y > 40){
+                        i--;
                      } else {
                         tempObject.position.set(tempPosition.x + position.x, tempPosition.y + position.y, tempPosition.z + position.z);
                         tempObject.scale.setScalar(Math.random() * 0.5 + 0.5);

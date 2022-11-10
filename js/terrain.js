@@ -63,9 +63,20 @@ export default class Terrain extends THREE.Object3D {
         this.terrainImage.src = 'images/terrain' + this.islandNumber + '.png' ;
         
     }
+    //Test
+    readTextureToGeometry(){
+        let v2 = new THREE.Vector2();
+        let color = [];
+        for (let i = 0; i < this.data.length; i++) {
+            color.push(this.data[i] * this.height);
+        }
+        this.geometry.setAttribute("color", new THREE.Float32BufferAttribute(color, 1));
+        console.log("done");
+      }
 
-    #addThrees(terrainData, amountOfTrees) {
-        this.data = terrainData
+    #addThrees(terrainData) {
+        this.data = terrainData;
+        this.readTextureToGeometry();
         let pos = {
             x: 0,
             y: 0,
@@ -74,7 +85,7 @@ export default class Terrain extends THREE.Object3D {
         let counter = 0;
         
 
-        const tree = new Tree(this.scene, 10, 300, this.geometry, this.terrain.position);
+        const tree = new Tree(this.scene, 1000, this.geometry, this.terrain.position);
         
 
         /*
