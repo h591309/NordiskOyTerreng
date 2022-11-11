@@ -3,9 +3,7 @@
 import * as THREE from "./three/three.module.js";
 import Islands from "./islands.js";
 import CameraController from "./cameraControls.js";
-import { Sky } from './three/Sky.js';
-import Ocean from './ocean.js';
-
+import Environment from "./environment.js";
 
 const numberOfIslands = 10;
 
@@ -14,12 +12,9 @@ const renderer = new THREE.WebGLRenderer({
     antialias: true,
 });
 
-let sun = new THREE.Vector3();
-
 const white = new THREE.Color(THREE.Color.NAMES.white);
 
 renderer.setClearColor(white, 1.0);
-
 const scene = new THREE.Scene();
 
 const camera = new THREE.PerspectiveCamera(80, 1, 0.1, 10000);
@@ -30,26 +25,6 @@ const axesHelper = new THREE.AxesHelper(100);
 scene.add(axesHelper);
 
 // Water
-const ocean = new Ocean(scene, 10000);
-// Skybox
-const sky = new Sky();
-sky.scale.setScalar( 10000 );
-scene.add( sky );
-
-const skyUniforms = sky.material.uniforms;
-
-skyUniforms[ 'turbidity' ].value = 10;
-skyUniforms[ 'rayleigh' ].value = 2;
-skyUniforms[ 'mieCoefficient' ].value = 0.005;
-skyUniforms[ 'mieDirectionalG' ].value = 0.8;
-
-const parameters = {
-elevation: 2,
-azimuth: 180
-};
-
-const pmremGenerator = new THREE.PMREMGenerator( renderer );
-let renderTarget;
 
 const islands = new Islands(scene, camera, numberOfIslands);
 const avgIslandPos = islands.getFirstIslandPos();
@@ -58,29 +33,8 @@ const controller = new CameraController(camera, renderer.domElement);
 controller.setTarget(new THREE.Vector3(avgIslandPos.x, 10, avgIslandPos.z));
 avgIslandPos.y = 50;
 controller.update();
-
-function updateSun() {
-    const phi = THREE.MathUtils.degToRad( 90 - parameters.elevation );
-    const theta = THREE.MathUtils.degToRad( parameters.azimuth );
-
-    sun.setFromSphericalCoords( 1, phi, theta );
-
-    sky.material.uniforms[ 'sunPosition' ].value.copy( sun );
-    ocean.water.material.uniforms[ 'sunDirection' ].value.copy( sun ).normalize();
-
-    if ( renderTarget !== undefined ) renderTarget.dispose();
-
-    renderTarget = pmremGenerator.fromScene( sky );
-
-    scene.environment = renderTarget.texture1;
-}
-
-const sunLight = new THREE.DirectionalLight(0xedcaab, 1.0);
-scene.add(sunLight);
-
-updateSun();
-
-const waterUniforms = ocean.water.material.uniforms;
+let env = new Environment(scene, renderer);
+env.animate();
 
 console.log("Done setting up everything!");
 
@@ -108,7 +62,7 @@ function animate() {
 }
 
 function render() {
-    ocean.animate();
+    env.animate();
     updateRendererSize();
     renderer.render(scene, camera);
     controller.update();
