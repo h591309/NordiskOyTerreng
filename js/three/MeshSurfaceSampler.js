@@ -31,7 +31,7 @@ class MeshSurfaceSampler {
 
 		if ( geometry.index ) {
 
-			console.warn( 'THREE.MeshSurfaceSampler: Converting geometry to non-indexed BufferGeometry.' );
+			//console.warn( 'THREE.MeshSurfaceSampler: Converting geometry to non-indexed BufferGeometry.' );
 
 			geometry = geometry.toNonIndexed();
 

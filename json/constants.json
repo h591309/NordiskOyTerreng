@@ -5,6 +5,9 @@
     "space": 600,
     "tree": {
         "size": 20
+    },
+    "rock": {
+        "size": 20
     }
 }
     

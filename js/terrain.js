@@ -4,6 +4,7 @@ import TerrainGeometry from "./terrainGeometry.js";
 import Constants from "../json/constants.json" assert {type: 'json'};
 import TextureSplattingMaterial from "./TextureSplattingMaterial.js";
 import Tree from "./Tree.js";
+import Rock from "./rock.js";
 import {MeshSurfaceSampler} from './three/MeshSurfaceSampler.js';
 
 export default class Terrain extends THREE.Object3D {
@@ -33,9 +34,9 @@ export default class Terrain extends THREE.Object3D {
         this.terrain.position.z += z;
     }
 
-    #generateTerrain() {
-        
-        this.terrainImage.onload = () => { 
+    async #generateTerrain() {
+        console.log("Genererer terreng");
+        this.terrainImage.onload = async () => { 
             const grass = new THREE.TextureLoader().load('images/grass.png');
             const rock = new THREE.TextureLoader().load('images/rock.png');
             const alphaMap = new THREE.TextureLoader().load('images/terrain' + this.islandNumber + '.png');
@@ -56,36 +57,48 @@ export default class Terrain extends THREE.Object3D {
             const mesh = new THREE.Mesh(this.geometry, material);
             this.terrain.add(mesh);
             this.scene.add(this.terrain);
-            this.#addThrees(this.geometry.data);
+            console.log("generer trær");
+            await this.#addThrees(this.geometry.data);
+            console.log("generer Steiner");
+            await this.#addRocks(this.geometry.data);
             //const box = new THREE.BoxHelper(mesh, 0xffff00);
             //this.terrain.add(box);
         }
         this.terrainImage.src = 'images/terrain' + this.islandNumber + '.png' ;
         
     }
-    generateHeatMap(){
+
+    generateHeatMap(inverse){
         let heat = [];
         for(let i = 0; i < this.geometry.attributes.uv.count; i++){
             let val = this.data[i];
+        if(inverse) {
             val = Math.pow(1 - val, 10);
-            heat.push(val);
+        } else {
+            val = Math.pow(val, 10);
         }
-        this.geometry.setAttribute("heat", new THREE.Float32BufferAttribute(heat, 1));
-        console.log("done");
+            heat.push(val);
+            this.geometry.setAttribute("heat", new THREE.Float32BufferAttribute(heat, 1));
+        }
+        //this.geometry.setAttribute("heat", new THREE.Float32BufferAttribute(heat, 1));
+    }
+
+    #addRocks(terrainData) {
+        return new Promise((resolve) => {
+            this.data = terrainData;
+            this.generateHeatMap(false);
+            const rock = new Rock(this.scene, 500, this.geometry, this.terrain.position, resolve);
+        });
+        
     }
 
     #addThrees(terrainData) {
-        this.data = terrainData;
-        this.generateHeatMap();
-        let pos = {
-            x: 0,
-            y: 0,
-            z: 0
-        }
-        let counter = 0;
+        return new Promise((resolve) => {
+            this.data = terrainData;
+            this.generateHeatMap(true);
+            const tree = new Tree(this.scene, 500, this.geometry, this.terrain.position, resolve);
+        });
         
-
-        const tree = new Tree(this.scene, 1000, this.geometry, this.terrain.position);
         
 
         /*

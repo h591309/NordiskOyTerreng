@@ -14,6 +14,5 @@ export default class Environment {
     animate() {
         this.ocean.animate();
         this.sun.updateSun();
-        console.log("animating");
     }
 }

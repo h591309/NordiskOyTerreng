@@ -9,10 +9,7 @@ export default class Islands {
         this.scene = scene;
         this.camera = camera;
         this.numberOfIslands = numberOfIslands;
-        console.log("Setting up water and islands!");
         this.generate();
-        console.log("Done setting up water and islands!");
-        
     }
 
     generate() {

@@ -3,18 +3,18 @@ import * as THREE from './three/three.module.js';
 import Constants from "../json/constants.json" assert {type: 'json'};
 import {placeObjectOnTerrain} from "./utils.js";
 
-export default class Tree {
+export default class Rock {
     constructor(scene, amount, geometry, position, resolve) {
-        const size = Constants.tree.size;
+        const size = Constants.rock.size;
         const loader = new GLTFLoader();
-        loader.load( '../3dmodels/basicThree4.glb', function ( gltf ) {
+        loader.load( '../3dmodels/rock.glb', function ( gltf ) {
             gltf.scene.children[0].scale.set(size,size,size);
             gltf.scene.traverse(function(child) {
-                const trees = new THREE.InstancedMesh(child.geometry, child.material, amount);
-                scene.add(trees);
+                const rocks = new THREE.InstancedMesh(child.geometry, child.material, amount);
+                scene.add(rocks);
                 
-                placeObjectOnTerrain(position, geometry, trees, amount);
-                resolve("done");
+                placeObjectOnTerrain(position, geometry, rocks, amount);
+                resolve(true);
             });
         }, undefined, function ( error ) {
             console.error( error );
