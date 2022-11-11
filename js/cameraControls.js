@@ -30,6 +30,7 @@ export default class CameraController {
         this.controls.maxPolarAngle = Math.PI / 2;
 
         
+        
     }
     setPosition(pos) {
         this.camera.position.set(pos.x, pos.y, pos.z);
