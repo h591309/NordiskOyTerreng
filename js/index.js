@@ -57,7 +57,7 @@ function updateRendererSize() {
         camera.aspect = width / height;
         camera.updateProjectionMatrix();
     }
-    
+    //   
 }
 animate();
 
