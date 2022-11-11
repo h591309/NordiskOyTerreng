@@ -63,11 +63,11 @@ export default class Terrain extends THREE.Object3D {
         this.terrainImage.src = 'images/terrain' + this.islandNumber + '.png' ;
         
     }
-    readTextureToGeometry(){
+    generateHeatMap(){
         let heat = [];
         for(let i = 0; i < this.geometry.attributes.uv.count; i++){
             let val = this.data[i];
-            val = Math.pow(1 - val, 10); // emphasise (not mandatory)
+            val = Math.pow(1 - val, 10);
             heat.push(val);
         }
         this.geometry.setAttribute("heat", new THREE.Float32BufferAttribute(heat, 1));
@@ -76,7 +76,7 @@ export default class Terrain extends THREE.Object3D {
 
     #addThrees(terrainData) {
         this.data = terrainData;
-        this.readTextureToGeometry();
+        this.generateHeatMap();
         let pos = {
             x: 0,
             y: 0,
@@ -85,7 +85,7 @@ export default class Terrain extends THREE.Object3D {
         let counter = 0;
         
 
-        const tree = new Tree(this.scene, 700, this.geometry, this.terrain.position);
+        const tree = new Tree(this.scene, 1000, this.geometry, this.terrain.position);
         
 
         /*

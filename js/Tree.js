@@ -47,10 +47,6 @@ export default class Tree {
     animate() {
 
     }
-
-    setMatrixAt(i, matrix) {
-        this.child.setMatrixAt(i, matrix);
-    }
     
 
     /*
