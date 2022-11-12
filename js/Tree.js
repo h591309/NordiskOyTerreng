@@ -7,18 +7,16 @@ export default class Tree {
     constructor(scene, amount, geometry, position, resolve) {
         const size = Constants.tree.size;
         const loader = new GLTFLoader();
-        loader.load( '../3dmodels/basicThree4.glb', function ( gltf ) {
+        loader.load( '../3dmodels/tree.glb', function ( gltf ) {
+            const child = gltf.scene.children[0];
+            console.log(child.material.color);
             gltf.scene.children[0].scale.set(size,size,size);
-            gltf.scene.traverse(function(child) {
                 const trees = new THREE.InstancedMesh(child.geometry, child.material, amount);
                 scene.add(trees);
                 
                 placeObjectOnTerrain(position, geometry, trees, amount);
                 resolve("done");
             });
-        }, undefined, function ( error ) {
-            console.error( error );
-        } );
     }
 
     animate() {

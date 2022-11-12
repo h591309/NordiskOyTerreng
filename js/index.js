@@ -26,7 +26,7 @@ const scene = new THREE.Scene();
 let user = new THREE.Group();
 const camera = new THREE.PerspectiveCamera(80, 1, 0.1, 10000);
 camera.lookAt(0, 0, 0);
-user.position.set(0, 100 ,0);
+user.position.set(0, 0 ,0);
 camera.position.y = 10;
 user.add( camera );
 scene.add(user);
