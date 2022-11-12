@@ -5,7 +5,6 @@ import Constants from "../json/constants.json" assert {type: 'json'};
 import TextureSplattingMaterial from "./TextureSplattingMaterial.js";
 import Tree from "./Tree.js";
 import Rock from "./rock.js";
-import {MeshSurfaceSampler} from './three/MeshSurfaceSampler.js';
 
 export default class Terrain extends THREE.Object3D {
     constructor(scene, camera) {
