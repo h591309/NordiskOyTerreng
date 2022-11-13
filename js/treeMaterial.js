@@ -1,5 +1,4 @@
 "use strict";
-
 import * as THREE from "../three/three.module.js";
 
 export default class TreeMaterial extends THREE.ShaderMaterial {
