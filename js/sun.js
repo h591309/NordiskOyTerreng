@@ -9,10 +9,10 @@ export default class Sun {
         this.sunLight.castShadow = true;
         this.sunLight.position.set(0, 1000, -5000);
         this.sunLight.target.position.set(0, 0, 0);
-        this.sunLight.shadow.camera.near = 0.1;
-        this.sunLight.shadow.camera.far = 1000;
-        this.sunLight.shadow.mapSize.width = 10000;
-        this.sunLight.shadow.mapSize.height = 10000;
+        this.sunLight.shadow.camera.near = 1;
+        this.sunLight.shadow.camera.far = 6000;
+        this.sunLight.shadow.mapSize.width = 512;
+        this.sunLight.shadow.mapSize.height = 512;
         this.elevation = 0.2;
         this.azimuth = 180;
         this.scene = scene;

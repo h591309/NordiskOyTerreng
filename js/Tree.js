@@ -34,14 +34,6 @@ export default class Tree {
             */
         let material = new THREE.ShaderMaterial({
             uniforms: THREE.UniformsUtils.merge( [
-				THREE.UniformsLib[ 'specularmap' ],
-                THREE.UniformsLib[ 'envmap' ],
-                THREE.UniformsLib[ 'aomap' ],
-                THREE.UniformsLib[ 'lightmap' ],
-                THREE.UniformsLib[ 'emissivemap' ],
-                THREE.UniformsLib[ 'bumpmap' ],
-                THREE.UniformsLib[ 'normalmap' ],
-                THREE.UniformsLib[ 'displacementmap' ],
                 THREE.UniformsLib[ 'fog' ],
                 THREE.UniformsLib[ 'lights' ],
 
@@ -57,7 +49,6 @@ export default class Tree {
             fragmentShader: fragmentShader,
             fog: true,
             lights: true,
-            castShadow: true,
         });
 /* 
         const vertexShader = vShader;
@@ -69,6 +60,9 @@ export default class Tree {
             //material = child.material;
             child.name = "tree";
             let trees = new THREE.InstancedMesh(child.geometry, material, amount);
+
+            trees.castShadow = true;
+            trees.receiveShadow = false;
             scene.add(trees);
             placeObjectOnTerrain(position, geometry, trees, amount);
             resolve("done");

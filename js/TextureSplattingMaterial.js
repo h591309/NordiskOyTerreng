@@ -82,7 +82,6 @@ export default class TextureSplattingMaterial extends THREE.ShaderMaterial {
       defines,
       fog: true,
       lights: true,
-      receiveShadow: true,
     });
   }
 }
@@ -256,6 +255,22 @@ uniform sampler2D alphaMaps[NUMBER_OF_ALPHA_MAPS];
 varying vec2 colorMapsUvs[NUMBER_OF_COLOR_MAPS];
 #endif
 
+float getShadowMask() {
+  float shadow = 1.0;
+  #ifdef USE_SHADOWMAP
+      #if NUM_DIR_LIGHT_SHADOWS > 0
+          DirectionalLightShadow directionalLight;
+          #pragma unroll_loop_start
+          for ( int i = 0; i < NUM_DIR_LIGHT_SHADOWS; i ++ ) {
+              directionalLight = directionalLightShadows[ i ];
+              shadow *= receiveShadow ? getShadow( directionalShadowMap[ i ], directionalLight.shadowMapSize, directionalLight.shadowBias, directionalLight.shadowRadius, vDirectionalShadowCoord[ i ] ) : 1.0;
+          }
+          #pragma unroll_loop_end
+      #endif
+  #endif
+  return shadow;
+}
+
 void main() {
   #include <clipping_planes_fragment>
   vec4 diffuseColor = vec4( diffuse, opacity );
@@ -264,13 +279,12 @@ void main() {
   #include <logdepthbuf_fragment>
   #include <map_fragment>
   #include <color_fragment>
-
+  float shadow = getShadowMask(); //TODO
   // Custom:
   #ifdef USE_ALPHA_MAPS
   vec4 alphaMapColor = ${expression};
   diffuseColor *= alphaMapColor;
   #endif
-
   #include <alphamap_fragment>
   #include <alphatest_fragment>
   #include <roughnessmap_fragment>
@@ -290,18 +304,21 @@ void main() {
   vec3 totalDiffuse = reflectedLight.directDiffuse + reflectedLight.indirectDiffuse;
   vec3 totalSpecular = reflectedLight.directSpecular + reflectedLight.indirectSpecular;
   #include <transmission_fragment>
+  
   vec3 outgoingLight = totalDiffuse + totalSpecular + totalEmissiveRadiance;
+
   #ifdef USE_SHEEN
     // Sheen energy compensation approximation calculation can be found at the end of
     // https://drive.google.com/file/d/1T0D1VSyR4AllqIJTQAraEIzjlb5h4FKH/view?usp=sharing
     float sheenEnergyComp = 1.0 - 0.157 * max3( material.sheenColor );
-    outgoingLight = outgoingLight * sheenEnergyComp + sheenSpecular;
+    outgoingLight = outgoingLight * sheenEnergyComp * + sheenSpecular;
   #endif
   #ifdef USE_CLEARCOAT
     float dotNVcc = saturate( dot( geometry.clearcoatNormal, geometry.viewDir ) );
     vec3 Fcc = F_Schlick( material.clearcoatF0, material.clearcoatF90, dotNVcc );
     outgoingLight = outgoingLight * ( 1.0 - material.clearcoat * Fcc ) + clearcoatSpecular * material.clearcoat;
   #endif
+  
   #include <output_fragment>
   #include <tonemapping_fragment>
   #include <encodings_fragment>
