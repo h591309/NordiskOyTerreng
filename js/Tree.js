@@ -15,19 +15,48 @@ export default class Tree {
 
         const fragmentShader = fShader
 
+            /* UniformsLib.common,
+			UniformsLib.specularmap,
+			UniformsLib.envmap,
+			UniformsLib.aomap,
+			UniformsLib.lightmap,
+			UniformsLib.emissivemap,
+			UniformsLib.bumpmap,
+			UniformsLib.normalmap,
+			UniformsLib.displacementmap,
+			UniformsLib.fog,
+			UniformsLib.lights,
+			{
+				emissive: { value: new Color( 0x000000 ) },
+				specular: { value: new Color( 0x111111 ) },
+				shininess: { value: 30 }
+			}
+            */
         let material = new THREE.ShaderMaterial({
             uniforms: THREE.UniformsUtils.merge( [
-				THREE.UniformsLib[ 'fog' ],
+				THREE.UniformsLib[ 'specularmap' ],
+                THREE.UniformsLib[ 'envmap' ],
+                THREE.UniformsLib[ 'aomap' ],
+                THREE.UniformsLib[ 'lightmap' ],
+                THREE.UniformsLib[ 'emissivemap' ],
+                THREE.UniformsLib[ 'bumpmap' ],
+                THREE.UniformsLib[ 'normalmap' ],
+                THREE.UniformsLib[ 'displacementmap' ],
+                THREE.UniformsLib[ 'fog' ],
+                THREE.UniformsLib[ 'lights' ],
+
                 {
-                    diffuse: new THREE.Color(0xffffff),
-                    emissive: new THREE.Color(0x000000),
-                    roughness: 1.0,
-                    metalness: 0.0,
+                    diffuse: {value: new THREE.Color(0xffffff)},
+                    emissive: {value: new THREE.Color(0x000000)},
+                    roughness: { value: 1.0 },
+                    metalness: { value: 0.0 },
+                    shininess: { value: 30 },
                 },
             ]),
             vertexShader: vertexShader,
             fragmentShader: fragmentShader,
             fog: true,
+            lights: true
         });
 /* 
         const vertexShader = vShader;
