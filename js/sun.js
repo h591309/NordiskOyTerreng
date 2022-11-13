@@ -5,7 +5,7 @@ import * as THREE from "./three/three.module.js";
 export default class Sun {
     constructor(scene, renderer, ocean, skybox) {
         this.sun = new THREE.Vector3();
-        this.sunLight = new THREE.DirectionalLight(0xedcaab, 2.5);
+        this.sunLight = new THREE.DirectionalLight(0xffad9e, 2.5);
         this.sunLight.castShadow = true;
         this.sunLight.position.set(0, 1000, -5000);
         this.sunLight.target.position.set(0, 0, 0);
@@ -13,7 +13,7 @@ export default class Sun {
         this.sunLight.shadow.camera.far = 1000;
         this.sunLight.shadow.mapSize.width = 10000;
         this.sunLight.shadow.mapSize.height = 10000;
-        this.elevation = 2;
+        this.elevation = 0.2;
         this.azimuth = 180;
         this.scene = scene;
         this.scene.add(this.sunLight);

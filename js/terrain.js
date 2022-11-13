@@ -55,7 +55,6 @@ export default class Terrain extends THREE.Object3D {
                 alphaMaps: [alphaMap]
             });
             const mesh = new THREE.Mesh(this.geometry, material);
-            mesh.receiveShadow = true;
             this.terrain.add(mesh);
             this.scene.add(this.terrain);
             console.log("generer trær");

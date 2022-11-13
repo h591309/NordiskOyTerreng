@@ -27,7 +27,6 @@ export default class TextureSplattingMaterial extends THREE.ShaderMaterial {
         `There must be exactly one alpha-map less than there are color-maps, found ${colorMaps.length} color-maps and ${alphaMaps.length} alpha-maps.`
       );
     }
-
     // Setup our uniforms object:
     // If you want to keep the functionality of a built-in material you have to add the appropriate uniforms.
     // You can find the uniforms for built-in shaders here:
@@ -83,6 +82,7 @@ export default class TextureSplattingMaterial extends THREE.ShaderMaterial {
       defines,
       fog: true,
       lights: true,
+      receiveShadow: true,
     });
   }
 }

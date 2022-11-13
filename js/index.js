@@ -24,8 +24,9 @@ const white = new THREE.Color(THREE.Color.NAMES.white);
 
 renderer.setClearColor(white, 1.0);
 const scene = new THREE.Scene();
-scene.fog = new THREE.FogExp2(0x81c7b4, 0.001);
-
+scene.fog = new THREE.FogExp2(0x91584d, 0.001);
+let ambient = new THREE.AmbientLight(0xd95a43, 0.1);
+scene.add(ambient);
 let user = new THREE.Group();
 const camera = new THREE.PerspectiveCamera(80, 1, 0.1, 10000);
 camera.lookAt(0, 0, 0);

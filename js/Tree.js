@@ -56,7 +56,8 @@ export default class Tree {
             vertexShader: vertexShader,
             fragmentShader: fragmentShader,
             fog: true,
-            lights: true
+            lights: true,
+            castShadow: true,
         });
 /* 
         const vertexShader = vShader;
@@ -68,8 +69,6 @@ export default class Tree {
             //material = child.material;
             child.name = "tree";
             let trees = new THREE.InstancedMesh(child.geometry, material, amount);
-            trees.castShadow = true;
-            trees.receiveShadow = true;
             scene.add(trees);
             placeObjectOnTerrain(position, geometry, trees, amount);
             resolve("done");
