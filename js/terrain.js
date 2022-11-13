@@ -7,9 +7,10 @@ import Tree from "./Tree.js";
 import Rock from "./rock.js";
 
 export default class Terrain extends THREE.Object3D {
-    constructor(scene, camera) {
+    constructor(scene, renderer, camera) {
         super();
         this.scene = scene;
+        this.renderer = renderer;
         this.camera = camera;
         this.terrainImage = new Image();
         this.terrain = new THREE.Object3D();
@@ -54,12 +55,14 @@ export default class Terrain extends THREE.Object3D {
                 alphaMaps: [alphaMap]
             });
             const mesh = new THREE.Mesh(this.geometry, material);
+            mesh.receiveShadow = true;
             this.terrain.add(mesh);
             this.scene.add(this.terrain);
             console.log("generer trær");
             await this.#addThrees(this.geometry.data);
             console.log("generer Steiner");
             await this.#addRocks(this.geometry.data);
+            this.renderer.shadowMap.needsUpdate = true;
             //const box = new THREE.BoxHelper(mesh, 0xffff00);
             //this.terrain.add(box);
         }
@@ -86,7 +89,7 @@ export default class Terrain extends THREE.Object3D {
         return new Promise((resolve) => {
             this.data = terrainData;
             this.generateHeatMap(false);
-            const rock = new Rock(this.scene, 500, this.geometry, this.terrain.position, resolve);
+            const rock = new Rock(this.scene, 50, this.geometry, this.terrain.position, resolve);
         });
         
     }

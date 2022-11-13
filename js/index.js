@@ -17,11 +17,14 @@ const renderer = new THREE.WebGLRenderer({
 
 renderer.xr.enabled = true;
 document.body.appendChild(VRButton.createButton(renderer));
+renderer.shadowMap.enabled = true;
+
 
 const white = new THREE.Color(THREE.Color.NAMES.white);
 
 renderer.setClearColor(white, 1.0);
 const scene = new THREE.Scene();
+scene.fog = new THREE.FogExp2(0x81c7b4, 0.001);
 
 let user = new THREE.Group();
 const camera = new THREE.PerspectiveCamera(80, 1, 0.1, 10000);
@@ -33,16 +36,15 @@ scene.add(user);
 
 const axesHelper = new THREE.AxesHelper(100);
 scene.add(axesHelper);
+let env = new Environment(scene, renderer);
+env.animate();
 
-const islands = new Islands(scene, camera, numberOfIslands);
+const islands = new Islands(scene, renderer, camera, numberOfIslands);
 const avgIslandPos = islands.getFirstIslandPos();
 
 const controller = new CameraController(camera, renderer.domElement);
 controller.setTarget(new THREE.Vector3(avgIslandPos.x, 10, avgIslandPos.z));
 controller.update();
-
-let env = new Environment(scene, renderer);
-env.animate();
 
 function updateRendererSize() {
     const { x: currentWidth, y: currentHeight } = renderer.getSize(

@@ -2,14 +2,13 @@
 
 import { GLTFLoader } from './three/GLTFLoader.js';
 import * as THREE from './three/three.module.js';
-import Constants from "../json/constants.json" assert {type: 'json'};
 import {placeObjectOnTerrain} from "./utils.js";
 import vShader from "./shaders/tree_vertexShader.js";
 import fShader from "./shaders/tree_fragmentShader.js";
 
 export default class Tree {
     constructor(scene, amount, geometry, position, resolve) {
-        const size = Constants.tree.size;
+        const size = 100;
         const loader = new GLTFLoader();
 
         const vertexShader = vShader
@@ -17,19 +16,33 @@ export default class Tree {
         const fragmentShader = fShader
 
         let material = new THREE.ShaderMaterial({
-            uniforms: {},
+            uniforms: THREE.UniformsUtils.merge( [
+				THREE.UniformsLib[ 'fog' ],
+                {
+                    diffuse: new THREE.Color(0xffffff),
+                    emissive: new THREE.Color(0x000000),
+                    roughness: 1.0,
+                    metalness: 0.0,
+                },
+            ]),
             vertexShader: vertexShader,
-            fragmentShader: fragmentShader
+            fragmentShader: fragmentShader,
+            fog: true,
         });
+
+        console.log(THREE.UniformsLib.lights);
 /* 
         const vertexShader = vShader;
         const fragmentShader = fShader;
  */
         loader.load( '../3dmodels/Tree.glb', function ( gltf ) {
             const child = gltf.scene.children[0];
-            gltf.scene.children[0].scale.set(size,size,size);
+            child.scale.set(size,size,size);
             //material = child.material;
+            child.name = "tree";
             let trees = new THREE.InstancedMesh(child.geometry, material, amount);
+            trees.castShadow = true;
+            trees.receiveShadow = true;
             scene.add(trees);
             console.log(trees.material);
             placeObjectOnTerrain(position, geometry, trees, amount);

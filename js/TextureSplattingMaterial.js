@@ -32,6 +32,7 @@ export default class TextureSplattingMaterial extends THREE.ShaderMaterial {
     // If you want to keep the functionality of a built-in material you have to add the appropriate uniforms.
     // You can find the uniforms for built-in shaders here:
     // https://github.com/mrdoob/three.js/blob/master/src/renderers/shaders/ShaderLib.js
+    
     let uniforms = THREE.UniformsUtils.merge([
       THREE.ShaderLib.standard.uniforms,
       {
@@ -103,9 +104,6 @@ const glsl = (strings, ...expressions) => {
 const VERTEX_SHADER = glsl`
 #define STANDARD
 varying vec3 vViewPosition;
-#ifdef USE_TRANSMISSION
-  varying vec3 vWorldPosition;
-#endif
 
 // Custom:
 #ifdef USE_ALPHA_MAPS

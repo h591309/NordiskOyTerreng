@@ -1,11 +1,10 @@
 import { GLTFLoader } from './three/GLTFLoader.js';
 import * as THREE from './three/three.module.js';
-import Constants from "../json/constants.json" assert {type: 'json'};
 import {placeObjectOnTerrain} from "./utils.js";
 
 export default class Rock {
     constructor(scene, amount, geometry, position, resolve) {
-        const size = Constants.rock.size;
+        const size = 10;
         const loader = new GLTFLoader();
         loader.load( '../3dmodels/rock.glb', function ( gltf ) {
             gltf.scene.children[0].scale.set(size,size,size);

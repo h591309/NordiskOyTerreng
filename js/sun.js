@@ -5,7 +5,14 @@ import * as THREE from "./three/three.module.js";
 export default class Sun {
     constructor(scene, renderer, ocean, skybox) {
         this.sun = new THREE.Vector3();
-        this.sunLight = new THREE.DirectionalLight(0xedcaab, 1.0);
+        this.sunLight = new THREE.DirectionalLight(0xedcaab, 2.5);
+        this.sunLight.castShadow = true;
+        this.sunLight.position.set(0, 1000, -5000);
+        this.sunLight.target.position.set(0, 0, 0);
+        this.sunLight.shadow.camera.near = 0.1;
+        this.sunLight.shadow.camera.far = 1000;
+        this.sunLight.shadow.mapSize.width = 10000;
+        this.sunLight.shadow.mapSize.height = 10000;
         this.elevation = 2;
         this.azimuth = 180;
         this.scene = scene;
@@ -14,6 +21,8 @@ export default class Sun {
         this.pmremGenerator = new THREE.PMREMGenerator(renderer);
         this.ocean = ocean;
         this.skybox = skybox;
+        const cameraHelper = new THREE.CameraHelper(this.sunLight.shadow.camera);
+        scene.add(cameraHelper);
     }
 
     updateSun() {
