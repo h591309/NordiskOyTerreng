@@ -29,8 +29,6 @@ export default class Tree {
             fragmentShader: fragmentShader,
             fog: true,
         });
-
-        console.log(THREE.UniformsLib.lights);
 /* 
         const vertexShader = vShader;
         const fragmentShader = fShader;
@@ -44,7 +42,6 @@ export default class Tree {
             trees.castShadow = true;
             trees.receiveShadow = true;
             scene.add(trees);
-            console.log(trees.material);
             placeObjectOnTerrain(position, geometry, trees, amount);
             resolve("done");
         });

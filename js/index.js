@@ -6,7 +6,7 @@ import CameraController from "./cameraControls.js";
 import Environment from "./environment.js";
 import { VRButton } from "./three/VRButton.js";
 
-const numberOfIslands = 3;
+const numberOfIslands = 10;
 
 const renderer = new THREE.WebGLRenderer({
     canvas: document.querySelector("canvas"),
