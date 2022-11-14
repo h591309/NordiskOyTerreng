@@ -6,7 +6,7 @@ import CameraController from "./cameraControls.js";
 import Environment from "./environment.js";
 import { VRButton } from "./three/VRButton.js";
 
-const numberOfIslands = 5;
+const numberOfIslands = 2;
 
 const renderer = new THREE.WebGLRenderer({
     canvas: document.querySelector("canvas"),
@@ -18,6 +18,7 @@ const renderer = new THREE.WebGLRenderer({
 renderer.xr.enabled = true;
 document.body.appendChild(VRButton.createButton(renderer));
 renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
 
 const white = new THREE.Color(THREE.Color.NAMES.white);
@@ -26,6 +27,7 @@ renderer.setClearColor(white, 1.0);
 const scene = new THREE.Scene();
 scene.fog = new THREE.FogExp2(0x91584d, 0.001);
 let ambient = new THREE.AmbientLight(0xd95a43, 0.1);
+ambient.castShadow = false;
 scene.add(ambient);
 let user = new THREE.Group();
 const camera = new THREE.PerspectiveCamera(80, 1, 0.1, 10000);
@@ -34,6 +36,7 @@ user.position.set(0, 0 ,0);
 camera.position.y = 10;
 user.add( camera );
 scene.add(user);
+
 
 const axesHelper = new THREE.AxesHelper(100);
 scene.add(axesHelper);

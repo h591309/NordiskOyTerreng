@@ -63,6 +63,9 @@ void main() {
 
     #include <clipping_planes_fragment>
     vec4 diffuseColor = vec4( diffuse, 1.0 );
+    if(yPos < 1.0) {
+        vec4 diffuseColor = vec4(vec3(0.639,0.463,0.373), 1.0 );
+    }
     ReflectedLight reflectedLight = ReflectedLight( vec3( 0.0 ), vec3( 0.0 ), vec3( 0.0 ), vec3( 0.0 ) );
     vec3 totalEmissiveRadiance = emissive;
     #include <roughnessmap_fragment>
@@ -70,16 +73,19 @@ void main() {
     #include <normal_fragment_begin>
     #include <normal_fragment_maps>
     #include <emissivemap_fragment>
+    
     // accumulation
     #include <lights_physical_fragment>
     #include <lights_fragment_begin>
     #include <lights_fragment_maps>
     #include <lights_fragment_end>
+    
     // modulation
     #include <aomap_fragment>
     vec3 totalDiffuse = reflectedLight.directDiffuse + reflectedLight.indirectDiffuse;
     vec3 totalSpecular = reflectedLight.directSpecular + reflectedLight.indirectSpecular;
     #include <transmission_fragment>
+
     vec3 outgoingLight = totalDiffuse + totalSpecular + totalEmissiveRadiance;
     #ifdef USE_SHEEN
         // Sheen energy compensation approximation calculation can be found at the end of
@@ -87,14 +93,13 @@ void main() {
         float sheenEnergyComp = 1.0 - 0.157 * max3( material.sheenColor );
         outgoingLight = outgoingLight * sheenEnergyComp + sheenSpecular;
     #endif
-
-    gl_FragColor = vec4(mix(colorStem, outgoingLight, 0.2), 1.0);
+    gl_FragColor = vec4(mix(colorStem, outgoingLight, 0.5), 1.0);
     if(yPos > 1.0) {
-        gl_FragColor = vec4(mix(colorLeaves, outgoingLight, 0.2), 1.0);
+        gl_FragColor = vec4(mix(colorLeaves, outgoingLight, 0.5), 1.0);
     }
     
-
-    
+    #include <tonemapping_fragment>
+    #include <encodings_fragment>
     #include <fog_fragment>
 
 }

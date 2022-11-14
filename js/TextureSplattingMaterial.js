@@ -255,22 +255,6 @@ uniform sampler2D alphaMaps[NUMBER_OF_ALPHA_MAPS];
 varying vec2 colorMapsUvs[NUMBER_OF_COLOR_MAPS];
 #endif
 
-float getShadowMask() {
-  float shadow = 1.0;
-  #ifdef USE_SHADOWMAP
-      #if NUM_DIR_LIGHT_SHADOWS > 0
-          DirectionalLightShadow directionalLight;
-          #pragma unroll_loop_start
-          for ( int i = 0; i < NUM_DIR_LIGHT_SHADOWS; i ++ ) {
-              directionalLight = directionalLightShadows[ i ];
-              shadow *= receiveShadow ? getShadow( directionalShadowMap[ i ], directionalLight.shadowMapSize, directionalLight.shadowBias, directionalLight.shadowRadius, vDirectionalShadowCoord[ i ] ) : 1.0;
-          }
-          #pragma unroll_loop_end
-      #endif
-  #endif
-  return shadow;
-}
-
 void main() {
   #include <clipping_planes_fragment>
   vec4 diffuseColor = vec4( diffuse, opacity );
@@ -279,7 +263,6 @@ void main() {
   #include <logdepthbuf_fragment>
   #include <map_fragment>
   #include <color_fragment>
-  float shadow = getShadowMask(); //TODO
   // Custom:
   #ifdef USE_ALPHA_MAPS
   vec4 alphaMapColor = ${expression};

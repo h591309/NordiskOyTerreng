@@ -36,9 +36,10 @@ export default class Tree {
             uniforms: THREE.UniformsUtils.merge( [
                 THREE.UniformsLib[ 'fog' ],
                 THREE.UniformsLib[ 'lights' ],
+                THREE.UniformsLib[ 'shadowmap' ],
 
                 {
-                    diffuse: {value: new THREE.Color(0xffffff)},
+                    diffuse: {value: new THREE.Color(0x91584d)},
                     emissive: {value: new THREE.Color(0x000000)},
                     roughness: { value: 1.0 },
                     metalness: { value: 0.0 },
@@ -50,19 +51,15 @@ export default class Tree {
             fog: true,
             lights: true,
         });
-/* 
-        const vertexShader = vShader;
-        const fragmentShader = fShader;
- */
+
         loader.load( '../3dmodels/Tree.glb', function ( gltf ) {
             const child = gltf.scene.children[0];
             child.scale.set(size,size,size);
             //material = child.material;
             child.name = "tree";
             let trees = new THREE.InstancedMesh(child.geometry, material, amount);
-
             trees.castShadow = true;
-            trees.receiveShadow = false;
+            trees.receiveShadow = true;
             scene.add(trees);
             placeObjectOnTerrain(position, geometry, trees, amount);
             resolve("done");

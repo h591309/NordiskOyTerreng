@@ -23,8 +23,9 @@ export default class Ocean {
         } ),
         sunDirection: new THREE.Vector3(),
         sunColor: 0xffffff,
-        waterColor: 0x001e0f,
+        waterColor: 0x6e3122,
         distortionScale: 3.7,
+        alpha: 1,
         fog: scene.fog !== undefined
         }
         );

@@ -10,6 +10,7 @@ export default class Rock {
             gltf.scene.children[0].scale.set(size,size,size);
             gltf.scene.traverse(function(child) {
                 const rocks = new THREE.InstancedMesh(child.geometry, child.material, amount);
+                rocks.castShadow = true;
                 scene.add(rocks);
                 
                 placeObjectOnTerrain(position, geometry, rocks, amount);
