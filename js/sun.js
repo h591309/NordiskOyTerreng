@@ -6,7 +6,7 @@ export default class Sun {
     constructor(scene, renderer, ocean, skybox) {
         this.sun = new THREE.Vector3();
         this.sunLight = new THREE.DirectionalLight(0xd95a43, 2.5, 1000);
-        const d = 1000;
+        const d = 2500;
 
         this.sunLight.shadow.camera.left = - d;
         this.sunLight.shadow.camera.right = d;
@@ -17,7 +17,6 @@ export default class Sun {
         this.sunLight.castShadow = true;
         this.sunLight.position.y = 500;
         this.sunLight.position.z = -2000;
-
         this.elevation = 0.2;
         this.azimuth = 180;
         this.scene = scene;
@@ -26,13 +25,12 @@ export default class Sun {
         this.pmremGenerator = new THREE.PMREMGenerator(renderer);
         this.ocean = ocean;
         this.skybox = skybox;
-        const cameraHelper = new THREE.CameraHelper(this.sunLight.shadow.camera);
-        scene.add(cameraHelper);
-        console.log(this.sunLight);
         this.sunLight.shadow.mapSize.width = 1000;
         this.sunLight.shadow.mapSize.height = 1000;
         this.sunLight.shadow.camera.near = 0.1;
-        this.sunLight.shadow.camera.far = 6000;
+        this.sunLight.shadow.camera.far = 4000;
+        const cameraHelper = new THREE.CameraHelper(this.sunLight.shadow.camera);
+        scene.add(cameraHelper);
     }
 
     updateSun() {
