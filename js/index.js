@@ -7,7 +7,7 @@ import Environment from "./environment.js";
 import { VRButton } from "./three/VRButton.js";
 //import { XRControllerModelFactory } from "./three/XRControllerModelFactory.js";
 
-const numberOfIslands = 2;
+const numberOfIslands = 5;
 const vrCamTarget = {
     x: 0,
     y: 100,
