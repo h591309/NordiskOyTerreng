@@ -5,17 +5,32 @@ import Islands from "./islands.js";
 import CameraController from "./cameraControls.js";
 import Environment from "./environment.js";
 import { VRButton } from "./three/VRButton.js";
+//import { XRControllerModelFactory } from "./three/XRControllerModelFactory.js";
 
-const numberOfIslands = 5;
+const numberOfIslands = 2;
+const vrCamTarget = {
+    x: 0,
+    y: 100,
+    z: 0,
+};
 
+console.log(numberOfIslands);
+let camToNumber = 0;
 const renderer = new THREE.WebGLRenderer({
     canvas: document.querySelector("canvas"),
     antialias: true,
 });
-
 //Enable VR support
 
-renderer.xr.enabled = true;
+const xr = renderer.xr;
+
+xr.enabled = true;
+console.log(renderer.xr);
+/* 
+const xrMangager = new XRControllerModelFactory();
+console.log(xrMangager);
+
+ */
 document.body.appendChild(VRButton.createButton(renderer));
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
@@ -29,13 +44,23 @@ scene.fog = new THREE.FogExp2(0x91584d, 0.0005);
 let ambient = new THREE.AmbientLight(0xd95a43, 0.1);
 ambient.castShadow = false;
 scene.add(ambient);
+let animateScene = false;
+let animationSpeed = 0.5;
+let introScene = false;
+let introSpeed = 0.1;
+
+
 let user = new THREE.Group();
 const camera = new THREE.PerspectiveCamera(90, 1, 0.1, 10000);
 camera.lookAt(0, 0, 0);
-user.position.set(0, 0 ,0);
-camera.position.y = 10;
-user.add( camera );
-scene.add(user);
+xr.addEventListener("sessionstart", () => {
+    user.position.set(0, 2000 ,0);
+    user.add( camera );
+    user.updateMatrix();
+    scene.add(user);
+    introScene = true;
+});
+
 
 
 const axesHelper = new THREE.AxesHelper(100);
@@ -44,10 +69,10 @@ let env = new Environment(scene, camera, renderer);
 env.animate();
 
 const islands = new Islands(scene, renderer, camera, numberOfIslands);
-const avgIslandPos = islands.getFirstIslandPos();
+const firstIslandPos = islands.getFirstIslandPos();
 
 const controller = new CameraController(camera, renderer.domElement);
-controller.setTarget(new THREE.Vector3(avgIslandPos.x, 10, avgIslandPos.z));
+controller.setTarget(new THREE.Vector3(firstIslandPos.x, 10, firstIslandPos.z));
 controller.update();
 
 function updateRendererSize() {
@@ -73,11 +98,68 @@ function animate() {
     render();
 }
 
+function moveCamIntro(target) {
+    let y;
+    let moveY;
+    console.log(user.position.y);
+    y = Math.max(user.position.y, target.y) - Math.min(user.position.y, target.y);
+    if(user.position.y > target.y) {
+        moveY = Math.min(introSpeed, y)
+        user.position.y -= moveY;
+    } else if(user.position.y < target.y) {
+        moveY = Math.min( introSpeed, y)
+        user.position.y += moveY;
+    }
+    if(introSpeed < 30) {
+        introSpeed += 0.2;
+    }
+}
+function moveCameraTo(position) {
+    let x, z;
+    let moveX, moveZ;
+    x = Math.max(user.position.x, position.x) - Math.min(user.position.x, position.x);
+    if(user.position.x > position.x) {
+        moveX = Math.min(animationSpeed, x)
+        user.position.x -= moveX;
+    } else if(user.position.x < position.x) {
+        moveX = Math.min( animationSpeed, x )
+        user.position.x += moveX;
+    }
+
+    z = Math.max(user.position.z, position.z) - Math.min(user.position.z, position.z);
+    if(user.position.z > position.z) {
+        moveZ = Math.min( animationSpeed, z );
+        user.position.z -= moveZ;
+    } else if (user.position.z < position.z) {
+        moveZ = Math.min( animationSpeed, z );
+        user.position.z += moveZ;
+    }
+}
+
+
 function render() {
     env.animate();
-    updateRendererSize();
+    if(xr.getSession() == null) {
+        updateRendererSize();
+    }
     renderer.render(scene, camera);
     controller.update();
+    if(introScene) {
+        moveCamIntro(vrCamTarget);
+        if(user.position.y == vrCamTarget.y) {
+            introScene = false;
+            animateScene = true;
+        }
+    }
+    if(animateScene) {
+        if(camToNumber > numberOfIslands - 1) {
+            camToNumber = 0;
+        }
+        moveCameraTo(islands.islands[camToNumber].terrain.position);
+        if(islands.islands[camToNumber].terrain.position.x == user.position.x && islands.islands[camToNumber].terrain.position.z == user.position.z) {
+            camToNumber++;
+        }
+    }
 }
 
 //renderer.setAnimationLoop(animate);
