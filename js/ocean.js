@@ -16,7 +16,7 @@ export default class Ocean {
         {
         textureWidth: 512,
         textureHeight: 512,
-        waterNormals: new THREE.TextureLoader().load( '../images/waternormals.jpeg', function ( texture1 ) {
+        waterNormals: new THREE.TextureLoader().load( './images/waternormals.jpeg', function ( texture1 ) {
 
             texture1.wrapS = texture1.wrapT = THREE.RepeatWrapping;
 
