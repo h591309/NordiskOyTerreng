@@ -3,6 +3,7 @@ import {
 	BackSide,
 	BoxGeometry,
 	Mesh,
+	ShaderLib,
 	ShaderMaterial,
 	UniformsUtils,
 	Vector3
@@ -32,9 +33,13 @@ class Sky extends Mesh {
 			name: 'SkyShader',
 			fragmentShader: shader.fragmentShader,
 			vertexShader: shader.vertexShader,
-			uniforms: UniformsUtils.clone( shader.uniforms ),
+			uniforms: UniformsUtils.merge([
+				UniformsUtils.clone( shader.uniforms ),
+				ShaderLib.standard.uniforms
+			]),
 			side: BackSide,
-			depthWrite: false
+			depthWrite: false,
+			fog: true
 		} );
 
 		super( new BoxGeometry( 1, 1, 1 ), material );
@@ -57,6 +62,13 @@ Sky.SkyShader = {
 	},
 
 	vertexShader: /* glsl */`
+	
+		#include <fog_pars_vertex>
+		#include <logdepthbuf_pars_vertex>
+		varying vec3 vViewPosition;
+		varying float yPos;
+	
+	
 		uniform vec3 sunPosition;
 		uniform float rayleigh;
 		uniform float turbidity;
@@ -105,11 +117,17 @@ Sky.SkyShader = {
 
 		void main() {
 
+			#include <begin_vertex>
+			#include <project_vertex>
+			#include <fog_vertex>
+			vViewPosition = - mvPosition.xyz;
+			
 			vec4 worldPosition = modelMatrix * vec4( position, 1.0 );
 			vWorldPosition = worldPosition.xyz;
 
 			gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
 			gl_Position.z = gl_Position.w; // set z to camera.far
+			yPos = gl_Position.y;
 
 			vSunDirection = normalize( sunPosition );
 
@@ -129,6 +147,10 @@ Sky.SkyShader = {
 		}`,
 
 	fragmentShader: /* glsl */`
+		#include <fog_pars_fragment>
+		varying vec3 vViewPosition;
+		varying float yPos;
+
 		varying vec3 vWorldPosition;
 		varying vec3 vSunDirection;
 		varying float vSunfade;
@@ -208,8 +230,27 @@ Sky.SkyShader = {
 
 			vec3 retColor = pow( texColor, vec3( 1.0 / ( 1.2 + ( 1.2 * vSunfade ) ) ) );
 
-			gl_FragColor = vec4( retColor, 1.0 );
+			gl_FragColor = vec4(retColor, 1.0);
+			
+			#ifdef USE_FOG
 
+				#ifdef FOG_EXP2
+
+					float fogFactor = 1.0 - exp( - fogDensity * fogDensity * vFogDepth * vFogDepth );
+				#else
+
+					float fogFactor = smoothstep( fogNear, fogFar, vFogDepth );
+
+				#endif
+
+				gl_FragColor.rgb = mix(gl_FragColor.rgb, fogColor, fogFactor);
+
+				if(yPos > 0.0) {
+					//gl_FragColor.rgb = mix( mix(gl_FragColor.rgb, fogColor, fogFactor), retColor, sin(normalize(yPos)) * 0.5);
+				}
+
+			#endif
+			
 			#include <tonemapping_fragment>
 			#include <encodings_fragment>
 
