@@ -5,18 +5,18 @@ import * as THREE from "./three/three.module.js";
 export default class Sun {
     constructor(scene, renderer, ocean, skybox) {
         this.sun = new THREE.Vector3();
-        this.sunLight = new THREE.DirectionalLight(0xd95a43, 2.5, 1000);
-        const d = 2500;
+        this.sunLight = new THREE.DirectionalLight(0xd95a43, 4, 10000);
+        const d = 5000;
 
         this.sunLight.shadow.camera.left = - d;
         this.sunLight.shadow.camera.right = d;
-        this.sunLight.shadow.camera.top = d;
-        this.sunLight.shadow.camera.bottom = - d;
+        this.sunLight.shadow.camera.top = d - 3500;
+        this.sunLight.shadow.camera.bottom = - d + 4600;
         this.sunLight.target.position.set(this.sunLight.getWorldDirection(new THREE.Vector3( 0.70707, 0.70707, 0.0 )));
 
         this.sunLight.castShadow = true;
         this.sunLight.position.y = 500;
-        this.sunLight.position.z = -2000;
+        this.sunLight.position.z = -5000;
         this.elevation = 0.2;
         this.azimuth = 180;
         this.scene = scene;
@@ -28,7 +28,7 @@ export default class Sun {
         this.sunLight.shadow.mapSize.width = 1000;
         this.sunLight.shadow.mapSize.height = 1000;
         this.sunLight.shadow.camera.near = 0.1;
-        this.sunLight.shadow.camera.far = 4000;
+        this.sunLight.shadow.camera.far = 10000;
         const cameraHelper = new THREE.CameraHelper(this.sunLight.shadow.camera);
         scene.add(cameraHelper);
     }

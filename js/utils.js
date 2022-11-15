@@ -37,7 +37,8 @@ export function placeObjectOnTerrain(terrainPosition, geometry, instancedMesh, a
           i--;
         } else {
           tempObject.position.set(tempPosition.x + terrainPosition.x, tempPosition.y + terrainPosition.y+1, tempPosition.z + terrainPosition.z);
-          tempObject.scale.setScalar(Math.random() * 0.5 + 1);
+          tempObject.scale.setScalar((Math.random() * 2 + 2));
+          tempObject.rotateY(1.5708)
           tempObject.updateMatrix();
           instancedMesh.setMatrixAt(i, tempObject.matrix);
         }
