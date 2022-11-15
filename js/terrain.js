@@ -1,7 +1,6 @@
 
 import * as THREE from "./three/three.module.js";
 import TerrainGeometry from "./terrainGeometry.js";
-import Constants from "../json/constants.json" assert {type: 'json'};
 import TextureSplattingMaterial from "./TextureSplattingMaterial.js";
 import Tree from "./Tree.js";
 import Rock from "./rock.js";
@@ -14,9 +13,9 @@ export default class Terrain extends THREE.Object3D {
         this.camera = camera;
         this.terrainImage = new Image();
         this.terrain = new THREE.Object3D();
-        this.size = Constants.size;
-        this.height = Constants.height;
-        this.resolution = Constants.resolution;
+        this.size = 1200;
+        this.height = 100;
+        this.resolution = 128;
         this.islandNumber = Math.floor(Math.random() * 3) + 1;
         this.treePositions = [];
         this.matrix = [];
