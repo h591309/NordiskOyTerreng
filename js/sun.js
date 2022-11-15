@@ -29,8 +29,6 @@ export default class Sun {
         this.sunLight.shadow.mapSize.height = 1000;
         this.sunLight.shadow.camera.near = 0.1;
         this.sunLight.shadow.camera.far = 10000;
-        const cameraHelper = new THREE.CameraHelper(this.sunLight.shadow.camera);
-        scene.add(cameraHelper);
     }
 
     updateSun() {

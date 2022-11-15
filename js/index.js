@@ -39,14 +39,14 @@ scene.add(ambient);
 let animateScene = false;
 let animationSpeed = 0.5;
 let introScene = false;
-let introSpeed = 0.1;
+let introSpeed = 0.01;
 
 
 let user = new THREE.Group();
 const camera = new THREE.PerspectiveCamera(90, 1, 0.1, 10000);
 camera.lookAt(0, 0, 0);
 xr.addEventListener("sessionstart", () => {
-    user.position.set(0, 2000 ,0);
+    user.position.set(0, 500 ,0);
     user.add( camera );
     user.updateMatrix();
     scene.add(user);
@@ -54,9 +54,6 @@ xr.addEventListener("sessionstart", () => {
 });
 
 
-
-const axesHelper = new THREE.AxesHelper(100);
-scene.add(axesHelper);
 let env = new Environment(scene, camera, renderer);
 env.animate();
 
@@ -102,10 +99,20 @@ function moveCamIntro(target) {
         moveY = Math.min( introSpeed, y)
         user.position.y += moveY;
     }
-    if(introSpeed < 30) {
+    if(introSpeed < 5) {
         introSpeed += 0.2;
     }
+    if(user.position.y < 350){
+        introSpeed *= 0.99;
+    }
+    if(user.position.y < 150){
+        introSpeed *= 0.8;
+    }
+    if(user.position.y < 110){
+        introSpeed *= 0.7;
+    }
 }
+
 function moveCameraTo(position) {
     let x, z;
     let moveX, moveZ;

@@ -58,15 +58,12 @@ export default class Terrain extends THREE.Object3D {
             mesh.castShadow = true;
             mesh.receiveShadow = true;
             this.terrain.add(mesh);
-            this.terrain.add(new THREE.BoxHelper(mesh));
             this.scene.add(this.terrain);
             console.log("generer trær");
             await this.#addThrees(this.geometry.data);
             console.log("generer Steiner");
             await this.#addRocks(this.geometry.data);
             this.renderer.shadowMap.needsUpdate = true;
-            //const box = new THREE.BoxHelper(mesh, 0xffff00);
-            //this.terrain.add(box);
         }
         this.terrainImage.src = 'images/terrain' + this.islandNumber + '.png' ;
         
