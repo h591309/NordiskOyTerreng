@@ -53,7 +53,7 @@ export default class Tree {
             lights: true,
         });
 
-        loader.load( '../3dmodels/Tree.glb', function ( gltf ) {
+        loader.load( './js/3dmodels/Tree.glb', function ( gltf ) {
             const child = gltf.scene.children[0];
             child.scale.set(size,size,size);
             //material = child.material;
