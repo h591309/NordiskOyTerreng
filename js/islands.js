@@ -12,7 +12,7 @@ export default class Islands {
         this.numberOfIslands = numberOfIslands;
         this.generate();
     }
-
+    
     generate() {
         for(let i = 0; i < this.numberOfIslands; i++) { // y
             let posX = Constants.space * Math.random() * 10 - (Constants.space * 10) / 2;

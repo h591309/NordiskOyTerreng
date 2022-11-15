@@ -2,8 +2,8 @@
 import { Sky } from './three/Sky.js';
 
 export default class Skybox {
-    constructor(scene) {
-        this.sky = new Sky();
+    constructor(scene, camera) {
+        this.sky = new Sky(camera);
         this.sky.scale.setScalar( 10000 );
         this.scene = scene;
         this.scene.add(this.sky);

@@ -25,7 +25,7 @@ const white = new THREE.Color(THREE.Color.NAMES.white);
 
 renderer.setClearColor(white, 1.0);
 const scene = new THREE.Scene();
-scene.fog = new THREE.FogExp2(0x91584d, 0.001);
+scene.fog = new THREE.FogExp2(0x91584d, 0.0005);
 let ambient = new THREE.AmbientLight(0xd95a43, 0.1);
 ambient.castShadow = false;
 scene.add(ambient);
@@ -40,7 +40,7 @@ scene.add(user);
 
 const axesHelper = new THREE.AxesHelper(100);
 scene.add(axesHelper);
-let env = new Environment(scene, renderer);
+let env = new Environment(scene, camera, renderer);
 env.animate();
 
 const islands = new Islands(scene, renderer, camera, numberOfIslands);

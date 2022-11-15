@@ -25,17 +25,20 @@ import {
 
 class Sky extends Mesh {
 
-	constructor() {
+	constructor(camera) {
 
 		const shader = Sky.SkyShader;
-
+		const cameraPos = camera.position;
 		const material = new ShaderMaterial( {
 			name: 'SkyShader',
 			fragmentShader: shader.fragmentShader,
 			vertexShader: shader.vertexShader,
 			uniforms: UniformsUtils.merge([
 				UniformsUtils.clone( shader.uniforms ),
-				ShaderLib.standard.uniforms
+				ShaderLib.standard.uniforms,
+				{
+					cameraPosition: cameraPos,
+				}
 			]),
 			side: BackSide,
 			depthWrite: false,
@@ -161,7 +164,9 @@ Sky.SkyShader = {
 		uniform float mieDirectionalG;
 		uniform vec3 up;
 
-		const vec3 cameraPos = vec3( 0.0, 0.0, 0.0 );
+		//const vec3 cameraPos = vec3( 0.0, 0.0, 0.0 );
+		uniform vec3 cameraPos;
+
 
 		// constants for atmospheric scattering
 		const float pi = 3.141592653589793238462643383279502884197169;
@@ -235,13 +240,21 @@ Sky.SkyShader = {
 			#ifdef USE_FOG
 
 				#ifdef FOG_EXP2
+					vec3 fogOrigin = cameraPos;
+					vec3 fogDirection = normalize(vWorldPosition - fogOrigin);
+					float fogDepth = distance(vWorldPosition, fogOrigin);
+					
+					float heightFactor = 0.3;
+					float fogFactor = heightFactor * exp(-fogOrigin.y * fogDensity) * (
+						1.0 - exp(-fogDepth * fogDirection.y * fogDensity)) / fogDirection.y;
+					fogFactor = clamp(fogFactor, 0.0, 1.0);
 
-					float fogFactor = 1.0 - exp( - fogDensity * fogDensity * vFogDepth * vFogDepth );
 				#else
 
 					float fogFactor = smoothstep( fogNear, fogFar, vFogDepth );
 
 				#endif
+
 
 				gl_FragColor.rgb = mix(gl_FragColor.rgb, fogColor, fogFactor);
 
@@ -250,7 +263,7 @@ Sky.SkyShader = {
 				}
 
 			#endif
-			
+
 			#include <tonemapping_fragment>
 			#include <encodings_fragment>
 

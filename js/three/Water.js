@@ -192,7 +192,7 @@ class Water extends Mesh {
 			uniforms: UniformsUtils.clone( mirrorShader.uniforms ),
 			lights: true,
 			side: side,
-			fog: fog
+			fog: fog,
 		} );
 
 		material.uniforms[ 'mirrorSampler' ].value = renderTarget.texture;
