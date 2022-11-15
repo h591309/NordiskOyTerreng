@@ -5,7 +5,6 @@ import Islands from "./islands.js";
 import CameraController from "./cameraControls.js";
 import Environment from "./environment.js";
 import { VRButton } from "./three/VRButton.js";
-//import { XRControllerModelFactory } from "./three/XRControllerModelFactory.js";
 
 const numberOfIslands = 5;
 const vrCamTarget = {
@@ -19,16 +18,11 @@ const renderer = new THREE.WebGLRenderer({
     canvas: document.querySelector("canvas"),
     antialias: true,
 });
-//Enable VR support
 
 const xr = renderer.xr;
 
 xr.enabled = true;
-/* 
-const xrMangager = new XRControllerModelFactory();
-console.log(xrMangager);
 
- */
 document.body.appendChild(VRButton.createButton(renderer));
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
@@ -160,5 +154,3 @@ function render() {
     renderer.render(scene, camera);
     controller.update();
 }
-
-//renderer.setAnimationLoop(animate);
