@@ -14,7 +14,6 @@ const vrCamTarget = {
     z: 0,
 };
 
-console.log(numberOfIslands);
 let camToNumber = 0;
 const renderer = new THREE.WebGLRenderer({
     canvas: document.querySelector("canvas"),
@@ -25,7 +24,6 @@ const renderer = new THREE.WebGLRenderer({
 const xr = renderer.xr;
 
 xr.enabled = true;
-console.log(renderer.xr);
 /* 
 const xrMangager = new XRControllerModelFactory();
 console.log(xrMangager);
@@ -40,7 +38,7 @@ const white = new THREE.Color(THREE.Color.NAMES.white);
 
 renderer.setClearColor(white, 1.0);
 const scene = new THREE.Scene();
-scene.fog = new THREE.FogExp2(0x91584d, 0.0005);
+scene.fog = new THREE.FogExp2(0x91584d, 0.0007);
 let ambient = new THREE.AmbientLight(0xd95a43, 0.1);
 ambient.castShadow = false;
 scene.add(ambient);
@@ -139,11 +137,10 @@ function moveCameraTo(position) {
 
 function render() {
     env.animate();
+    islands.animate();
     if(xr.getSession() == null) {
         updateRendererSize();
     }
-    renderer.render(scene, camera);
-    controller.update();
     if(introScene) {
         moveCamIntro(vrCamTarget);
         if(user.position.y == vrCamTarget.y) {
@@ -160,6 +157,8 @@ function render() {
             camToNumber++;
         }
     }
+    renderer.render(scene, camera);
+    controller.update();
 }
 
 //renderer.setAnimationLoop(animate);

@@ -17,7 +17,7 @@ export default class Sun {
         this.sunLight.castShadow = true;
         this.sunLight.position.y = 500;
         this.sunLight.position.z = -5000;
-        this.elevation = 0.2;
+        this.elevation = 2.0;
         this.azimuth = 180;
         this.scene = scene;
         this.scene.add(this.sunLight);

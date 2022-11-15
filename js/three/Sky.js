@@ -5,6 +5,7 @@ import {
 	Mesh,
 	ShaderLib,
 	ShaderMaterial,
+	SphereGeometry,
 	UniformsUtils,
 	Vector3
 } from "./three.module.js";
@@ -45,7 +46,7 @@ class Sky extends Mesh {
 			fog: true
 		} );
 
-		super( new BoxGeometry( 1, 1, 1 ), material );
+		super( new SphereGeometry(0.5, 32, 32), material );
 
 		this.isSky = true;
 
@@ -178,7 +179,7 @@ Sky.SkyShader = {
 		const float rayleighZenithLength = 8.4E3;
 		const float mieZenithLength = 1.25E3;
 		// 66 arc seconds -> degrees, and the cosine of that
-		const float sunAngularDiameterCos = 0.999956676946448443553574619906976478926848692873900859324;
+		const float sunAngularDiameterCos = 0.999856676946448443553574619906976478926848692873900859324;
 
 		// 3.0 / ( 16.0 * pi )
 		const float THREE_OVER_SIXTEENPI = 0.05968310365946075;
@@ -244,9 +245,13 @@ Sky.SkyShader = {
 					vec3 fogDirection = normalize(vWorldPosition - fogOrigin);
 					float fogDepth = distance(vWorldPosition, fogOrigin);
 					
-					float heightFactor = 0.3;
-					float fogFactor = heightFactor * exp(-fogOrigin.y * fogDensity) * (
-						1.0 - exp(-fogDepth * fogDirection.y * fogDensity)) / fogDirection.y;
+					
+					float heightFactor = 0.29;
+					float fogFactor = heightFactor * exp(-fogOrigin.y * fogDensity) * (1.0 - exp(-fogDepth * fogDirection.y * fogDensity)) / fogDirection.y;
+
+					if(yPos < 100.0) {
+					
+					}
 					fogFactor = clamp(fogFactor, 0.0, 1.0);
 
 				#else
@@ -255,12 +260,8 @@ Sky.SkyShader = {
 
 				#endif
 
-
 				gl_FragColor.rgb = mix(gl_FragColor.rgb, fogColor, fogFactor);
-
-				if(yPos > 0.0) {
-					//gl_FragColor.rgb = mix( mix(gl_FragColor.rgb, fogColor, fogFactor), retColor, sin(normalize(yPos)) * 0.5);
-				}
+				
 
 			#endif
 

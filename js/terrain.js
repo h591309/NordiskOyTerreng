@@ -17,7 +17,8 @@ export default class Terrain extends THREE.Object3D {
         this.height = 100;
         this.resolution = 128;
         this.islandNumber = Math.floor(Math.random() * 3) + 1;
-        this.treePositions = [];
+        this.trees = [];
+        this.treesIndex = 0;
         this.matrix = [];
         this.#generateTerrain();
         this.transform(0, -10, 0);
@@ -51,12 +52,13 @@ export default class Terrain extends THREE.Object3D {
             const material = new TextureSplattingMaterial({
                 color: THREE.Color.NAMES.white,
                 colorMaps: [grass, rock],
-                alphaMaps: [alphaMap]
+                alphaMaps: [alphaMap],
             });
             let mesh = new THREE.Mesh(this.geometry, material);
             mesh.castShadow = true;
             mesh.receiveShadow = true;
             this.terrain.add(mesh);
+            this.terrain.add(new THREE.BoxHelper(mesh));
             this.scene.add(this.terrain);
             console.log("generer trær");
             await this.#addThrees(this.geometry.data);
@@ -98,29 +100,15 @@ export default class Terrain extends THREE.Object3D {
         return new Promise((resolve) => {
             this.data = terrainData;
             this.generateHeatMap(true);
-            const tree = new Tree(this.scene, 250, this.geometry, this.terrain.position, resolve);
+            this.trees[this.treesIndex] = new Tree(this.scene, 250, this.geometry, this.terrain.position, resolve);
+            this.treesIndex++;
         });
-        
-        
-
-        /*
-        for(let i = 0; i < this.data.length; i+=4) {
-
+    }
+    animate() {
+        this.clock = new THREE.Clock();
+        let deltaTime = this.clock.getDelta();
+        for(let i = 0; i < this.trees.length; i++) {
+            this.trees[i].animate(deltaTime);
         }
-        
-        for(let i = 0; i < this.data.length; i+=4) {
-            let coord = this.data[i] < 0.7 && this.data[i] > 0.3;
-            if(amountOfTrees > 0) {
-                if(coord) {
-                    this.newThree[counter] = new Tree(this.scene, 1, pos);
-                    amountOfTrees--;
-                    counter++;
-                }
-            } else {
-                console.log("Done setting up trees!");
-                return;
-            }
-        }
-        */
     }
 }

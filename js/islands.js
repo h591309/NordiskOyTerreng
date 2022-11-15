@@ -29,4 +29,9 @@ export default class Islands {
         }
         return avgPos;
     }
+    animate() {
+        for(let i = 0; i < this.islands.length; i++){
+            this.islands[i].animate();
+        }
+    }
 }

@@ -2,6 +2,7 @@ const vertexShader = `
 
 #define STANDARD
 varying vec3 vViewPosition;
+uniform float time;
 
 varying float yPos;
 #include <common>
@@ -19,6 +20,12 @@ varying float yPos;
 
 
 void main () {
+    float displacement = sin(time * position.x) * -sin(time * position.z);
+    if(position.y < 1.0) {
+        displacement = 1.0;
+    }
+
+    vec3 newPosition = vec3(position + displacement * 0.43);
 
     #include <uv_vertex>
     #include <uv2_vertex>
@@ -41,9 +48,10 @@ void main () {
     #include <worldpos_vertex>
     #include <shadowmap_vertex>
     #include <fog_vertex>
+
     gl_Position = projectionMatrix * modelViewMatrix * instanceMatrix * vec4( position , 1.0 );
     if(mod(position.y, position.x) > 1.0) {
-        gl_Position = projectionMatrix * modelViewMatrix * instanceMatrix * vec4( position + vec3(cos(position.x), cos(position.y), cos(position.z)), 1.0 );
+        gl_Position = projectionMatrix * modelViewMatrix * instanceMatrix * vec4( newPosition , 1.0 );
     }
     
     yPos = position.y;
