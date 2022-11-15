@@ -16,7 +16,12 @@ const fragmentShader = `
         uniform sampler2D specularColorMap;
     #endif
 #endif
-
+#ifdef USE_IRIDESCENCE
+  uniform float iridescence;
+  uniform float iridescenceIOR;
+  uniform float iridescenceThicknessMinimum;
+  uniform float iridescenceThicknessMaximum;
+#endif
 #ifdef USE_SHEEN
     uniform vec3 sheenColor;
     uniform float sheenRoughness;
@@ -29,7 +34,6 @@ const fragmentShader = `
 #endif
 
 varying vec3 vViewPosition;
-varying vec3 vNormal;
 
 varying float yPos;
 uniform vec3 diffuse;
@@ -40,20 +44,27 @@ uniform float shininess;
 
 #include <common>
 #include <packing>
+#include <color_pars_fragment>
+#include <uv_pars_fragment>
+#include <uv2_pars_fragment>
 #include <aomap_pars_fragment>
 #include <lightmap_pars_fragment>
 #include <emissivemap_pars_fragment>
 #include <bsdfs>
+#include <iridescence_fragment>
 #include <envmap_common_pars_fragment>
 #include <envmap_physical_pars_fragment>
 #include <fog_pars_fragment>
 #include <lights_pars_begin>
 #include <lights_physical_pars_fragment>
+#include <normal_pars_fragment>
 #include <shadowmap_pars_fragment>
 #include <bumpmap_pars_fragment>
 #include <normalmap_pars_fragment>
+#include <iridescence_pars_fragment>
 #include <roughnessmap_pars_fragment>
 #include <metalnessmap_pars_fragment>
+#include <logdepthbuf_pars_fragment>
 #include <clipping_planes_pars_fragment>
 
 void main() {
@@ -67,6 +78,8 @@ void main() {
         vec4 diffuseColor = vec4(vec3(0.639,0.463,0.373), 1.0 );
     }
     ReflectedLight reflectedLight = ReflectedLight( vec3( 0.0 ), vec3( 0.0 ), vec3( 0.0 ), vec3( 0.0 ) );
+    #include <logdepthbuf_fragment>
+    #include <color_fragment>
     vec3 totalEmissiveRadiance = emissive;
     #include <roughnessmap_fragment>
     #include <metalnessmap_fragment>
@@ -93,11 +106,22 @@ void main() {
         float sheenEnergyComp = 1.0 - 0.157 * max3( material.sheenColor );
         outgoingLight = outgoingLight * sheenEnergyComp + sheenSpecular;
     #endif
-    gl_FragColor = vec4(mix(colorStem, outgoingLight, 0.5), 1.0);
+    
+
+    #ifdef OPAQUE
+        diffuseColor.a = 1.0;
+    #endif
+    #ifdef USE_TRANSMISSION
+        diffuseColor.a *= material.transmissionAlpha + 0.1;
+    #endif
+
+    gl_FragColor = vec4(mix(colorStem, outgoingLight, 0.5), diffuseColor.a);
     if(yPos > 1.0) {
-        gl_FragColor = vec4(mix(colorLeaves, outgoingLight, 0.5), 1.0);
+        gl_FragColor = vec4(mix(colorLeaves, outgoingLight, 0.5), diffuseColor.a);
     }
     
+
+
     #include <tonemapping_fragment>
     #include <encodings_fragment>
     #include <fog_fragment>

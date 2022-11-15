@@ -33,10 +33,11 @@ export default class Tree {
 			}
             */
         let material = new THREE.ShaderMaterial({
+            defines: {
+                USE_UV: ""
+            },
             uniforms: THREE.UniformsUtils.merge( [
-                THREE.UniformsLib[ 'fog' ],
-                THREE.UniformsLib[ 'lights' ],
-                THREE.UniformsLib[ 'shadowmap' ],
+                THREE.ShaderLib.standard.uniforms,
 
                 {
                     diffuse: {value: new THREE.Color(0x91584d)},
@@ -62,6 +63,8 @@ export default class Tree {
             trees.receiveShadow = true;
             scene.add(trees);
             placeObjectOnTerrain(position, geometry, trees, amount);
+            trees.updateMatrixWorld();
+            trees.updateMatrix();
             resolve("done");
         });
             
