@@ -41,8 +41,11 @@ void main () {
     #include <worldpos_vertex>
     #include <shadowmap_vertex>
     #include <fog_vertex>
-
-    gl_Position = projectionMatrix * modelViewMatrix * instanceMatrix * vec4( position, 1.0 );
+    gl_Position = projectionMatrix * modelViewMatrix * instanceMatrix * vec4( position , 1.0 );
+    if(mod(position.y, position.x) > 1.0) {
+        gl_Position = projectionMatrix * modelViewMatrix * instanceMatrix * vec4( position + vec3(cos(position.x), cos(position.y), cos(position.z)), 1.0 );
+    }
+    
     yPos = position.y;
 }
 `;

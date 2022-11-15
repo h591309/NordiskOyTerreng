@@ -69,7 +69,7 @@ uniform float shininess;
 
 void main() {
 
-    vec3 colorLeaves = vec3(0.286,0.749,0.361);
+    vec3 colorLeaves = vec3(0.098,0.361,0.192);
     vec3 colorStem = vec3(0.251,0.188,0.153);
 
     #include <clipping_planes_fragment>

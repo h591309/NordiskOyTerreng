@@ -9,7 +9,11 @@ export default class Rock {
         loader.load( '../3dmodels/rock.glb', function ( gltf ) {
             gltf.scene.children[0].scale.set(size,size,size);
             gltf.scene.traverse(function(child) {
-                const rocks = new THREE.InstancedMesh(child.geometry, child.material, amount);
+                const material = new THREE.MeshPhongMaterial({
+                    shininess: 0.01,
+                    color: 0x5c5a55,
+                });
+                const rocks = new THREE.InstancedMesh(child.geometry, material, amount);
                 rocks.castShadow = true;
                 scene.add(rocks);
                 

@@ -99,7 +99,7 @@ export default class Terrain extends THREE.Object3D {
         return new Promise((resolve) => {
             this.data = terrainData;
             this.generateHeatMap(true);
-            const tree = new Tree(this.scene, 500, this.geometry, this.terrain.position, resolve);
+            const tree = new Tree(this.scene, 250, this.geometry, this.terrain.position, resolve);
         });
         
         
