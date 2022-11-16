@@ -6,8 +6,9 @@ import {placeObjectOnTerrain} from "./utils.js";
 import vShader from "./shaders/tree_vertexShader.js";
 import fShader from "./shaders/tree_fragmentShader.js";
 
-export default class Tree {
+export default class Tree extends THREE.Object3D {
     constructor(scene, amount, geometry, position, resolve) {
+        super();
         const size = 100;
         const loader = new GLTFLoader();
 

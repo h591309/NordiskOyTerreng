@@ -102,6 +102,7 @@ export default class Terrain extends THREE.Object3D {
             this.data = terrainData;
             this.generateHeatMap(true);
             this.trees[this.treesIndex] = new Tree(this.scene, 250, this.geometry, this.terrain.position, resolve);
+            this.terrain.add(this.trees[this.treesIndex]);
             this.treesIndex++;
         });
     }
