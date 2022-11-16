@@ -122,6 +122,8 @@ varying vec3 vViewPosition;
 #include <shadowmap_pars_vertex>
 #include <logdepthbuf_pars_vertex>
 #include <clipping_planes_pars_vertex>
+varying float underWater;
+
 
 void main() {
   // Custom:
@@ -156,14 +158,14 @@ void main() {
   #endif
   float phase = 100.0;
   float frequency = 45.0;
-  vec3 pos = vec3(sin(phase*frequency) + position.x, position.y, sin(phase*frequency) + position.z);
-
-  if(position.y <= 0.00000){
-    pos = vec3(position.x, position.y - 3.0, position.z);
-  }
-  if(position.y == 0.5)
-  pos = vec3(position.x, position.y + 0.2, position.z);
+  vec3 pos = vec3(position.x, position.y,position.z);
   gl_Position = projectionMatrix * modelViewMatrix * vec4( pos, 1.0 );
+  underWater = 0.0;
+  if(worldPosition.y < -10.0){
+    pos = vec3(position.x, worldPosition.y, position.z);
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
+    underWater = 1.0;
+  }
 }
 `;
 
@@ -182,6 +184,7 @@ const fragmentShader = (length) => {
 
   return glsl`
 #define STANDARD
+
 #ifdef PHYSICAL
   #define IOR
   #define SPECULAR
@@ -265,9 +268,17 @@ uniform sampler2D alphaMaps[NUMBER_OF_ALPHA_MAPS];
 varying vec2 colorMapsUvs[NUMBER_OF_COLOR_MAPS];
 #endif
 
+varying float underWater;
+
 void main() {
+
+  if(underWater > 0.0) {
+    discard;
+    return;
+  }
   #include <clipping_planes_fragment>
   vec4 diffuseColor = vec4( diffuse, opacity );
+  
   ReflectedLight reflectedLight = ReflectedLight( vec3( 0.0 ), vec3( 0.0 ), vec3( 0.0 ), vec3( 0.0 ) );
   vec3 totalEmissiveRadiance = emissive;
   #include <logdepthbuf_fragment>
@@ -311,7 +322,7 @@ void main() {
     vec3 Fcc = F_Schlick( material.clearcoatF0, material.clearcoatF90, dotNVcc );
     outgoingLight = outgoingLight * ( 1.0 - material.clearcoat * Fcc ) + clearcoatSpecular * material.clearcoat;
   #endif
-  
+
   #include <output_fragment>
   #include <tonemapping_fragment>
   #include <encodings_fragment>

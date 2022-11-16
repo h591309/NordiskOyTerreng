@@ -62,13 +62,13 @@ env.animate();
 
 const oceanFloorGeo = new THREE.PlaneGeometry(10000, 10000, 10, 10);
 const oceanFloorMat = new THREE.MeshPhongMaterial({
-    color: 0x15242b,
+    color: 0x182620,
     side: THREE.DoubleSide,
     depthWrite: true
 });
 
 const oceanFloorMesh = new THREE.Mesh(oceanFloorGeo, oceanFloorMat);
-oceanFloorMesh.position.set(0, -12, 0);
+oceanFloorMesh.position.set(0, -25, 0);
 oceanFloorMesh.rotateX(1.5708);
 scene.add(oceanFloorMesh);
 

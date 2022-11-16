@@ -53,12 +53,12 @@ export default class Terrain extends THREE.Object3D {
             sand.repeat.multiplyScalar(this.size / 16);
             this.geometry = new TerrainGeometry(this.size, this.resolution, this.height, this.terrainImage);
 
-            const material = new TextureSplattingMaterial({
+            this.material = new TextureSplattingMaterial({
                 color: THREE.Color.NAMES.white,
                 colorMaps: [sand, grass, rock],
                 alphaMaps: [alphaMap, alphaMap2],
             });
-            let mesh = new THREE.Mesh(this.geometry, material);
+            let mesh = new THREE.Mesh(this.geometry, this.material);
             mesh.castShadow = true;
             mesh.receiveShadow = true;
             this.terrain.add(mesh);
