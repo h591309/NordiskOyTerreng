@@ -117,7 +117,7 @@ void main() {
 
     gl_FragColor = vec4(mix(colorStem, outgoingLight, 0.5), diffuseColor.a);
     if(yPos > 1.0) {
-        gl_FragColor = vec4(mix(colorLeaves, outgoingLight, 0.5), diffuseColor.a);
+        gl_FragColor.rgb = vec3(mix(colorLeaves, outgoingLight, 0.5));
     }
     
 
