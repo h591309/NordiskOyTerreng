@@ -2,7 +2,7 @@ import { GLTFLoader } from './three/GLTFLoader.js';
 import * as THREE from './three/three.module.js';
 import {placeObjectOnTerrain} from "./utils.js";
 
-export default class Rock {
+export default class Rock extends THREE.Object3D {
     constructor(scene, amount, geometry, position, resolve) {
         const size = 10;
         const loader = new GLTFLoader();

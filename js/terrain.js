@@ -93,6 +93,7 @@ export default class Terrain extends THREE.Object3D {
             this.data = terrainData;
             this.generateHeatMap(false);
             const rock = new Rock(this.scene, 50, this.geometry, this.terrain.position, resolve);
+            this.terrain.add(rock);
         });
         
     }
