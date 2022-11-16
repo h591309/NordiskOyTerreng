@@ -39,20 +39,24 @@ export default class Terrain extends THREE.Object3D {
         this.terrainImage.onload = async () => { 
             const grass = new THREE.TextureLoader().load('images/grass.png');
             const rock = new THREE.TextureLoader().load('images/rock.png');
+            const sand = new THREE.TextureLoader().load('images/sand.jpg');
             const alphaMap = new THREE.TextureLoader().load('images/terrain' + this.islandNumber + '.png');
+            const alphaMap2 = new THREE.TextureLoader().load('images/terrain' + this.islandNumber + '.png');
             grass.wrapS = THREE.RepeatWrapping;
             grass.wrapT = THREE.RepeatWrapping;
             grass.repeat.multiplyScalar(this.size / 16);
-            this.geometry = new TerrainGeometry(this.size, this.resolution, this.height, this.terrainImage);
             rock.wrapS = THREE.RepeatWrapping;
             rock.wrapT = THREE.RepeatWrapping;
-
             rock.repeat.multiplyScalar(this.size / 16);
+            sand.wrapS = THREE.RepeatWrapping;
+            sand.wrapT = THREE.RepeatWrapping;
+            sand.repeat.multiplyScalar(this.size / 16);
+            this.geometry = new TerrainGeometry(this.size, this.resolution, this.height, this.terrainImage);
 
             const material = new TextureSplattingMaterial({
                 color: THREE.Color.NAMES.white,
-                colorMaps: [grass, rock],
-                alphaMaps: [alphaMap],
+                colorMaps: [sand, grass, rock],
+                alphaMaps: [alphaMap, alphaMap2],
             });
             let mesh = new THREE.Mesh(this.geometry, material);
             mesh.castShadow = true;

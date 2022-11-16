@@ -156,7 +156,7 @@ class Water extends Mesh {
 				#include <shadowmask_pars_fragment>
 
 				void main() {
-
+					
 					#include <logdepthbuf_fragment>
 					vec4 noise = getNoise( worldPosition.xz * size );
 					vec3 surfaceNormal = normalize( noise.xzy * vec3( 1.5, 1.0, 1.5 ) );
@@ -179,7 +179,9 @@ class Water extends Mesh {
 					vec3 scatter = max( 0.0, dot( surfaceNormal, eyeDirection ) ) * waterColor;
 					vec3 albedo = mix( ( sunColor * diffuseLight * 0.3 + scatter ) * getShadowMask(), ( vec3( 0.1 ) + reflectionSample * 0.9 + reflectionSample * specularLight ), reflectance);
 					vec3 outgoingLight = albedo;
-					gl_FragColor = vec4( outgoingLight, alpha );
+					gl_FragColor = vec4( outgoingLight, alpha);
+
+					gl_FragColor.a = 0.7;
 
 					#include <tonemapping_fragment>
 					#include <fog_fragment>
@@ -188,6 +190,10 @@ class Water extends Mesh {
 		};
 
 		const material = new ShaderMaterial( {
+			transparent: true,
+			opacity: 0.2,
+			dithering: true,
+			depthWrite: false,
 			fragmentShader: mirrorShader.fragmentShader,
 			vertexShader: mirrorShader.vertexShader,
 			uniforms: UniformsUtils.clone( mirrorShader.uniforms ),

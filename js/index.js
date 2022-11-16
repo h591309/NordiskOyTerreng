@@ -28,11 +28,13 @@ renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
 
+
 const white = new THREE.Color(THREE.Color.NAMES.white);
 
 renderer.setClearColor(white, 1.0);
 const scene = new THREE.Scene();
 scene.fog = new THREE.FogExp2(0x91584d, 0.0007);
+scene.ambientFog = new THREE.Fog(0x91584d, 0.1, 1000);
 let ambient = new THREE.AmbientLight(0xd95a43, 0.1);
 ambient.castShadow = false;
 scene.add(ambient);
@@ -56,6 +58,20 @@ xr.addEventListener("sessionstart", () => {
 
 let env = new Environment(scene, camera, renderer);
 env.animate();
+
+
+const oceanFloorGeo = new THREE.PlaneGeometry(10000, 10000, 10, 10);
+const oceanFloorMat = new THREE.MeshPhongMaterial({
+    color: 0x15242b,
+    side: THREE.DoubleSide,
+    depthWrite: true
+});
+
+const oceanFloorMesh = new THREE.Mesh(oceanFloorGeo, oceanFloorMat);
+oceanFloorMesh.position.set(0, -12, 0);
+oceanFloorMesh.rotateX(1.5708);
+scene.add(oceanFloorMesh);
+
 
 const islands = new Islands(scene, renderer, camera, numberOfIslands);
 const firstIslandPos = islands.getFirstIslandPos();
@@ -90,7 +106,6 @@ function animate() {
 function moveCamIntro(target) {
     let y;
     let moveY;
-    console.log(user.position.y);
     y = Math.max(user.position.y, target.y) - Math.min(user.position.y, target.y);
     if(user.position.y > target.y) {
         moveY = Math.min(introSpeed, y)

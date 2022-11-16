@@ -154,6 +154,16 @@ void main() {
   #ifdef USE_TRANSMISSION
     vWorldPosition = worldPosition.xyz;
   #endif
+  float phase = 100.0;
+  float frequency = 45.0;
+  vec3 pos = vec3(sin(phase*frequency) + position.x, position.y, sin(phase*frequency) + position.z);
+
+  if(position.y <= 0.00000){
+    pos = vec3(position.x, position.y - 3.0, position.z);
+  }
+  if(position.y == 0.5)
+  pos = vec3(position.x, position.y + 0.2, position.z);
+  gl_Position = projectionMatrix * modelViewMatrix * vec4( pos, 1.0 );
 }
 `;
 
