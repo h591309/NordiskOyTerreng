@@ -25,7 +25,7 @@ void main () {
         displacement = 1.0;
     }
 
-    vec3 newPosition = vec3(position + displacement * 0.13);
+    vec3 newPosition = vec3(position + displacement * 0.20);
 
     #include <uv_vertex>
     #include <uv2_vertex>
@@ -49,7 +49,7 @@ void main () {
     #include <shadowmap_vertex>
     #include <fog_vertex>
 
-    //gl_Position = projectionMatrix * modelViewMatrix * instanceMatrix * vec4( position , 1.0 );
+    //gl_Position = projectionMatrix * modelViewMatrix * instanceMatrix * vec4(position , 1.0 );
     //if(mod(position.y, position.x) > 1.0) {
 
         gl_Position = projectionMatrix * modelViewMatrix * instanceMatrix * vec4( newPosition , 1.0 );
