@@ -9,7 +9,7 @@ export default class Rock {
         loader.load( './js/3dmodels/rock.glb', function ( gltf ) {
             gltf.scene.children[0].scale.set(size,size,size);
             gltf.scene.traverse(function(child) {
-                const material = new THREE.MeshPhongMaterial({
+                const material = new THREE.MeshLambertMaterial({
                     shininess: 0.01,
                     color: 0x5c5a55,
                 });

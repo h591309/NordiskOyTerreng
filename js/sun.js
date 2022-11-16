@@ -5,7 +5,10 @@ import * as THREE from "./three/three.module.js";
 export default class Sun {
     constructor(scene, renderer, ocean, skybox) {
         this.sun = new THREE.Vector3();
-        this.sunLight = new THREE.DirectionalLight(0xd95a43, 4, 10000);
+        //this.sunLight = new THREE.DirectionalLight(0xd95a43, 4, 10000);
+        //this.sunLight = new THREE.DirectionalLight(0xd1b18e, 4, 10000);
+        this.sunLight = new THREE.DirectionalLight(0xfcdcc7, 4, 10000);
+        
         const d = 5000;
 
         this.sunLight.shadow.camera.left = - d;

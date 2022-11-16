@@ -34,7 +34,6 @@ const white = new THREE.Color(THREE.Color.NAMES.white);
 renderer.setClearColor(white, 1.0);
 const scene = new THREE.Scene();
 scene.fog = new THREE.FogExp2(0x91584d, 0.0007);
-scene.ambientFog = new THREE.Fog(0x91584d, 0.1, 1000);
 let ambient = new THREE.AmbientLight(0xd95a43, 0.1);
 ambient.castShadow = false;
 scene.add(ambient);
@@ -49,6 +48,7 @@ const camera = new THREE.PerspectiveCamera(90, 1, 0.1, 10000);
 camera.lookAt(0, 0, 0);
 xr.addEventListener("sessionstart", () => {
     user.position.set(0, 500 ,0);
+    user.rotateY(3.14159);
     user.add( camera );
     user.updateMatrix();
     scene.add(user);
