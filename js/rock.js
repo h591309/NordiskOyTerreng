@@ -4,13 +4,13 @@ import {placeObjectOnTerrain} from "./utils.js";
 
 export default class Rock extends THREE.Object3D {
     constructor(scene, amount, geometry, position, resolve) {
+        super();
         const size = 10;
         const loader = new GLTFLoader();
         loader.load( './js/3dmodels/rock.glb', function ( gltf ) {
             gltf.scene.children[0].scale.set(size,size,size);
             gltf.scene.traverse(function(child) {
-                const material = new THREE.MeshLambertMaterial({
-                    shininess: 0.01,
+                const material = new THREE.MeshPhongMaterial({
                     color: 0x5c5a55,
                 });
                 const rocks = new THREE.InstancedMesh(child.geometry, material, amount);
