@@ -1,7 +1,7 @@
 "use strict";
 import { Sky } from './three/Sky.js';
 
-export default class Skybox {
+export default class Skydome {
     constructor(scene, camera) {
         this.sky = new Sky(camera);
         this.sky.scale.setScalar( 10000 );
