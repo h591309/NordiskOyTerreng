@@ -31,9 +31,6 @@ export default class IslandMap {
     this.renderer.setClearColor(0xffffff, 1.0);
     this.scene = new THREE.Scene();
     this.scene.fog = new THREE.FogExp2(0x91584d, 0.0007);
-    let ambient = new THREE.AmbientLight(0xd95a43, 0.1);
-    ambient.castShadow = false;
-    this.scene.add(ambient);
     this.animatescene = false;
     this.animationSpeed = 0.5;
     this.introScene = false;

@@ -10,8 +10,10 @@ export default class Rock extends THREE.Object3D {
         loader.load( './js/3dmodels/rock.glb', function ( gltf ) {
             gltf.scene.children[0].scale.set(size,size,size);
             gltf.scene.traverse(function(child) {
-                const material = new THREE.MeshPhongMaterial({
+                const material = new THREE.MeshStandardMaterial({
                     color: 0x5c5a55,
+                    roughness: 30.0,
+                    metalness: 1.0,
                 });
                 const rocks = new THREE.InstancedMesh(child.geometry, material, amount);
                 rocks.castShadow = true;

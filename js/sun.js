@@ -32,6 +32,10 @@ export default class Sun {
         this.sunLight.shadow.mapSize.height = 1000;
         this.sunLight.shadow.camera.near = 0.1;
         this.sunLight.shadow.camera.far = 10000;
+
+        let ambient = new THREE.AmbientLight(0xd95a43, 0.1);
+        ambient.castShadow = false;
+        this.scene.add(ambient);
     }
 
     updateSun() {
