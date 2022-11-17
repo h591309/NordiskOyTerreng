@@ -5,6 +5,7 @@ import * as THREE from './three/three.module.js';
 import {placeObjectOnTerrain} from "./utils.js";
 import vShader from "./shaders/tree_vertexShader.js";
 import fShader from "./shaders/tree_fragmentShader.js";
+import TreeMaterial from './treeMaterial.js';
 
 export default class Tree extends THREE.Object3D {
     constructor(scene, amount, geometry, position, resolve) {
@@ -12,29 +13,14 @@ export default class Tree extends THREE.Object3D {
         const size = 100;
         const loader = new GLTFLoader();
 
-        const vertexShader = vShader
-
-        const fragmentShader = fShader
-        this.time = 0;
         this.trees = new THREE.Object3D();
 
-        this.material = new THREE.ShaderMaterial({
-            uniforms: THREE.UniformsUtils.merge( [
-                THREE.ShaderLib.standard.uniforms,
-
-                {
-                    diffuse: {value: new THREE.Color(0x91584d)},
-                    emissive: {value: new THREE.Color(0x000000)},
-                    roughness: { value: 1.0 },
-                    metalness: { value: 0.0 },
-                    shininess: { value: 30 },
-                    time: {type: "f", value: this.time},
-                },
-            ]),
-            vertexShader: vertexShader,
-            fragmentShader: fragmentShader,
-            fog: true,
-            lights: true,
+        this.material = new TreeMaterial({
+            color: 0x91584d,
+            emissive: 0x000000,
+            shininess: 1.0,
+            metalness: 0.5,
+            roughness: 5.0,
         });
 
         loader.load( './js/3dmodels/Tree.glb', ( gltf ) => {
@@ -54,7 +40,7 @@ export default class Tree extends THREE.Object3D {
             
     }
 
-    animate(deltaTime) {
+    animate() {
         //this.material.uniforms.time.value += 0.01*deltaTime;
         this.material.uniforms.time.value += 0.01;
         this.trees.updateMatrix();

@@ -108,10 +108,8 @@ export default class Terrain extends THREE.Object3D {
         });
     }
     animate() {
-        this.clock = new THREE.Clock();
-        let deltaTime = this.clock.getDelta();
         for(let i = 0; i < this.trees.length; i++) {
-            this.trees[i].animate(deltaTime);
+            this.trees[i].animate();
         }
     }
 }
