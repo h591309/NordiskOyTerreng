@@ -14,8 +14,8 @@ export default class Islands {
     
     generate() {
         for(let i = 0; i < this.numberOfIslands; i++) { // y
-            let posX = 300 * Math.random() * 10 - (300 * 10) / 2;
-            let posY = 300 * Math.random() * 10 - (300 * 10) / 2;
+            let posX = Math.random() * 3000 - (1500);
+            let posY = Math.random() * 3000 - (1500);
             this.islands[i] = new Terrain(this.scene, this.renderer, this.camera);
             this.islands[i].transform(posX , -0.5, posY);
         }

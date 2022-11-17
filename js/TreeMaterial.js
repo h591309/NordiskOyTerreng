@@ -20,7 +20,7 @@ export default class TreeMaterial extends THREE.ShaderMaterial {
         metalness = 0.0,
 
     } = {}) {
-
+        //
         const vertexShader = vShader;
         const fragmentShader = fShader;
 
