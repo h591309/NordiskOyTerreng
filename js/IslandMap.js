@@ -155,7 +155,7 @@ export default class IslandMap {
             this.#updateRendererSize();
         }
         if(this.introScene) {
-            this.#moveCamIntro(vrCamTarget);
+            this.#moveCamIntro(this.vrCamTarget);
             if(this.user.position.y == this.vrCamTarget.y) {
                 this.introScene = false;
                 this.animatescene = true;
