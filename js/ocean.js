@@ -32,6 +32,18 @@ export default class Ocean {
 
         this.water.rotation.x = - Math.PI / 2;
         this.scene.add(this.water);
+
+        this.oceanFloorGeo = new THREE.PlaneGeometry(10000, 10000, 10, 10);
+        this.oceanFloorMat = new THREE.MeshPhongMaterial({
+            color: 0x182620,
+            side: THREE.DoubleSide,
+            depthWrite: true
+        });
+    
+        this.oceanFloorMesh = new THREE.Mesh(this.oceanFloorGeo, this.oceanFloorMat);
+        this.oceanFloorMesh.position.set(0, -25, 0);
+        this.oceanFloorMesh.rotateX(1.5708);
+        this.scene.add(this.oceanFloorMesh);
     }
 
     /**
