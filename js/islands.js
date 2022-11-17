@@ -11,7 +11,7 @@ export default class Islands {
         this.numberOfIslands = numberOfIslands;
         this.generate();
     }
-    
+
     generate() {
         for(let i = 0; i < this.numberOfIslands; i++) { // y
             let posX = Math.random() * 3000 - (1500);
@@ -29,6 +29,7 @@ export default class Islands {
         }
         return avgPos;
     }
+
     animate() {
         for(let i = 0; i < this.islands.length; i++){
             this.islands[i].animate();
