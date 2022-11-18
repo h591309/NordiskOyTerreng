@@ -1,3 +1,5 @@
+"use strict";
+
 import * as THREE from "./three/three.module.js";
 import Islands from "./islands.js";
 import CameraController from "./cameraControls.js";

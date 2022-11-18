@@ -1,3 +1,5 @@
+"use strict";
+
 import { GLTFLoader } from './three/GLTFLoader.js';
 import * as THREE from './three/three.module.js';
 import {placeObjectOnTerrain} from "./utils.js";

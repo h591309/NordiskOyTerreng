@@ -17,9 +17,7 @@ export default class CameraController {
         this.controls = new OrbitControls( camera, domElement );
         this.controls.listenToKeyEvents( window ); // optional
 
-        //controls.addEventListener( 'change', render ); // call this only in static scenes (i.e., if there is no animation loop)
-
-        this.controls.enableDamping = true; // an animation loop is required when either damping or auto-rotation are enabled
+        this.controls.enableDamping = true;
         this.controls.dampingFactor = 0.05;
 
         this.controls.screenSpacePanning = false;

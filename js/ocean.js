@@ -1,3 +1,5 @@
+"use strict";
+
 import * as THREE from "./three/three.module.js";
 import { Water } from './three/Water.js';
 

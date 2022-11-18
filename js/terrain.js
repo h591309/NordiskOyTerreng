@@ -1,4 +1,6 @@
 
+"use strict";
+
 import * as THREE from "./three/three.module.js";
 import TerrainGeometry from "./terrainGeometry.js";
 import TextureSplattingMaterial from "./TextureSplattingMaterial.js";
