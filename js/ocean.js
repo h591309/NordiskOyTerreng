@@ -5,9 +5,11 @@ import { Water } from './three/Water.js';
 
 
 export default class Ocean {
+    
     /**
      * 
-     * @param {Integer} size 
+     * @param {THREE.Scene} scene 
+     * @param {number} size 
      */
     constructor(scene, size) {
         this.waterGeometry = new THREE.PlaneGeometry( size, size );
@@ -49,7 +51,7 @@ export default class Ocean {
     }
 
     /**
-     * Water animations
+     * Animates this class
      */
     animate() {
         this.water.material.uniforms[ 'time' ].value += 1.0 / 60.0;

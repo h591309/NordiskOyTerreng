@@ -3,6 +3,13 @@
 import * as THREE from "./three/three.module.js";
 
 export default class Sun {
+    /**
+     * 
+     * @param {THREE.Scene} scene 
+     * @param {THREE.WebGLRenderer} renderer 
+     * @param {Ocean} ocean 
+     * @param {Skybox} skybox 
+     */
     constructor(scene, renderer, ocean, skybox) {
         this.sun = new THREE.Vector3();
         //this.sunLight = new THREE.DirectionalLight(0xd95a43, 4, 10000);

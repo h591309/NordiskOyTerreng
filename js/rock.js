@@ -5,6 +5,14 @@ import * as THREE from './three/three.module.js';
 import {placeObjectOnTerrain} from "./utils.js";
 
 export default class Rock extends THREE.Object3D {
+    /**
+     * 
+     * @param {THREE.Scene} scene 
+     * @param {number} amount 
+     * @param {THREE.Geometry} geometry 
+     * @param {THREE.Object3D.position} position 
+     * @param {resolve} resolve 
+     */
     constructor(scene, amount, geometry, position, resolve) {
         super();
         const size = 10;
@@ -29,29 +37,11 @@ export default class Rock extends THREE.Object3D {
         } );
     }
 
+    /**
+     * 
+     * Animates this class
+     */
     animate() {
 
     }
-    
-
-    /*
-        		// model
-		
-		var dummy = new THREE.Object3D();
-
-		var loader = new GLTFLoader().setPath( 'https://threejs.org/examples/models/gltf/DamagedHelmet/glTF/' );
-		loader.load( 'DamagedHelmet.gltf', function ( gltf ) {	
-
-			gltf.scene.traverse( function ( child ) {
-
-				if ( child.isMesh ) {
-				
-					var instancedMesh = new THREE.InstancedMesh( child.geometry, child.material, 1 );
-					instancedMesh.setMatrixAt( 0, dummy.matrix );
-					scene.add( instancedMesh );
-
-				}
-
-			} );
-    */
 }

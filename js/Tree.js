@@ -6,6 +6,15 @@ import {placeObjectOnTerrain} from "./utils.js";
 import TreeMaterial from './TreeMaterial.js';
 
 export default class Tree extends THREE.Object3D {
+
+    /**
+     * 
+     * @param {THREE.Scene} scene 
+     * @param {number} amount 
+     * @param {THREE.Geometry} geometry 
+     * @param {THREE.Object3D.position} position 
+     * @param {resolve} resolve 
+     */
     constructor(scene, amount, geometry, position, resolve) {
         super();
         const size = 100;

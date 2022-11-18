@@ -7,8 +7,11 @@ import Environment from "./environment.js";
 import { VRButton } from "./three/VRButton.js";
 
 export default class IslandMap {
-    constructor() {
-    this.numberOfIslands = 5;
+    /**
+    *   @param {number} numberOfIslands
+    */
+    constructor(numberOfIslands) {
+    this.numberOfIslands = numberOfIslands;
     this.vrCamTarget = {
         x: 0,
         y: 100,
@@ -65,6 +68,9 @@ export default class IslandMap {
     this.animate();
     }
 
+    /**
+     * Update canvas width and height to match window size.
+     */
     #updateRendererSize() {
         const { x: currentWidth, y: currentHeight } = this.renderer.getSize(
             new THREE.Vector2()
@@ -80,6 +86,9 @@ export default class IslandMap {
         }
     }
 
+    /**
+     * Animate scene.
+     */
     animate() {
         //requestAnimationFrame( animate );             // For non vr
         this.renderer.setAnimationLoop(this.render.bind(this)); // For vr

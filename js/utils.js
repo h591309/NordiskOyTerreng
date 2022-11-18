@@ -3,6 +3,12 @@
 import {MeshSurfaceSampler} from './three/MeshSurfaceSampler.js';
 import * as THREE from "./three/three.module.js";
 
+/**
+ * 
+ * @param {THREE.Texture} image 
+ * @param {number} size 
+ * @returns Image data.
+ */
 export function getHeightmapData(image, size) {
     const canvas = document.createElement("canvas");
   

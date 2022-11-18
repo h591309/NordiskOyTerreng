@@ -8,6 +8,12 @@ import Tree from "./Tree.js";
 import Rock from "./rock.js";
 
 export default class Terrain extends THREE.Object3D {
+    /**
+     * 
+     * @param {THREE.Scene} scene 
+     * @param {THREE.WebGLRenderer} renderer 
+     * @param {THREE.Camera} camera 
+     */
     constructor(scene, renderer, camera) {
         super();
         this.scene = scene;
@@ -26,16 +32,30 @@ export default class Terrain extends THREE.Object3D {
         this.transform(0, -10, 0);
     }
 
+    /**
+     * 
+     * @returns Position of this terrain.
+     */
     pos() {
         return this.terrain.position;
     }
 
+    /**
+     * 
+     * @param {number} x 
+     * @param {number} y 
+     * @param {number} z 
+     */
     transform(x, y, z) {
         this.terrain.position.x += x;
         this.terrain.position.y += y;
         this.terrain.position.z += z;
     }
 
+    /**
+     * 
+     * Generates Terrain 
+     */
     async #generateTerrain() {
         console.log("Genererer terreng");
         this.terrainImage.onload = async () => { 
@@ -66,7 +86,7 @@ export default class Terrain extends THREE.Object3D {
             this.terrain.add(mesh);
             this.scene.add(this.terrain);
             console.log("generer trær");
-            await this.#addThrees(this.geometry.data);
+            await this.#addTrees(this.geometry.data);
             console.log("generer Steiner");
             await this.#addRocks(this.geometry.data);
             this.renderer.shadowMap.needsUpdate = true;
@@ -75,6 +95,12 @@ export default class Terrain extends THREE.Object3D {
         
     }
 
+    /**
+     * 
+     * @param {boolean} inverse 
+     * 
+     * Generates heatmap on terrain, based on height. Inverse = true means higher weight on lower terrain.
+     */
     generateHeatMap(inverse){
         let heat = [];
         for(let i = 0; i < this.geometry.attributes.uv.count; i++){
@@ -87,9 +113,14 @@ export default class Terrain extends THREE.Object3D {
             heat.push(val);
             this.geometry.setAttribute("heat", new THREE.Float32BufferAttribute(heat, 1));
         }
-        //this.geometry.setAttribute("heat", new THREE.Float32BufferAttribute(heat, 1));
     }
 
+    /**
+     * 
+     * Generates rocks on random parts of map. Takes heatmap from generateHeatmap() into account.
+     * @param {MeshHeightData} terrainData 
+     * @returns Promise
+     */
     #addRocks(terrainData) {
         return new Promise((resolve) => {
             this.data = terrainData;
@@ -100,7 +131,13 @@ export default class Terrain extends THREE.Object3D {
         
     }
 
-    #addThrees(terrainData) {
+     /**
+     * 
+     * Generate Trees on random parts of map. Takes heatmap from generateHeatmap() into account.
+     * @param {MeshHeightData} terrainData 
+     * @returns Promise
+     */
+    #addTrees(terrainData) {
         return new Promise((resolve) => {
             this.data = terrainData;
             this.generateHeatMap(true);
@@ -109,6 +146,10 @@ export default class Terrain extends THREE.Object3D {
             this.treesIndex++;
         });
     }
+
+    /**
+     * Animates this class
+     */
     animate() {
         for(let i = 0; i < this.trees.length; i++) {
             this.trees[i].animate();

@@ -2,6 +2,11 @@
 import { Sky } from './three/Sky.js';
 
 export default class Skydome {
+    /**
+     * 
+     * @param {THREE.Scene} scene 
+     * @param {THREE.Camera} camera 
+     */
     constructor(scene, camera) {
         this.sky = new Sky(camera);
         this.sky.scale.setScalar( 10000 );

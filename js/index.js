@@ -2,4 +2,4 @@
 
 import IslandMap from "./IslandMap.js";
 
-new IslandMap();
+new IslandMap(5);
