@@ -17,7 +17,7 @@ export default class Rock extends THREE.Object3D {
         super();
         const size = 10;
         const loader = new GLTFLoader();
-        loader.load( './js/3dmodels/rock.glb', function ( gltf ) {
+        loader.load( './3dmodels/rock.glb', function ( gltf ) {
             gltf.scene.children[0].scale.set(size,size,size);
             gltf.scene.traverse(function(child) {
                 const material = new THREE.MeshStandardMaterial({

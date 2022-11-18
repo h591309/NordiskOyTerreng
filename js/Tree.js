@@ -30,7 +30,7 @@ export default class Tree extends THREE.Object3D {
             roughness: 5.0,
         });
 
-        loader.load( './js/3dmodels/Tree.glb', ( gltf ) => {
+        loader.load( './3dmodels/Tree.glb', ( gltf ) => {
             const child = gltf.scene.children[0];
             child.scale.set(size,size,size);
             //material = child.material;
